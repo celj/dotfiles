@@ -31,11 +31,14 @@ brew bundle cleanup --force --file=~/dotfiles/brew/pkgs
 ln -sf ~/dotfiles/git/* ~/
 ```
 
-### helix
+### neovim
 
 ```shell
-mkdir -p ~/.config/helix
-ln -sf ~/dotfiles/helix/* ~/.config/helix/
+git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
+rm -rf ~/.config/nvim/lua/custom
+rm -rf ~/.local/share/nvim
+mkdir -p ~/.config/nvim/lua/custom
+ln -sf ~/dotfiles/nvim/custom ~/.config/nvim/lua
 ```
 
 ### warp

@@ -38,7 +38,7 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 alias cat='bat --theme=ansi'
 alias cel='conda env list'
 alias config-zsh='vi ~/.zshrc && unalias -m "*" && source ~/.zshrc'
-alias dotfiles='code ~/dotfiles'
+alias dotfiles='cd ~/dotfiles && vi .'
 alias gd='ydiff -s -p cat'
 alias gignored='git ls-files . --ignored --exclude-standard --others'
 alias guntracked='git ls-files . --exclude-standard --others'
@@ -49,7 +49,7 @@ alias pip-reqs='pip freeze --exclude-editable > requirements.txt'
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias size='du -shc * | grep total'
 alias tree='eza --tree'
-alias vi='hx'
+alias vi='nvim'
 
 function cnew() {
     conda create -n "$1" python="$2" -y &&
