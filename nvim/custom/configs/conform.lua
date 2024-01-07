@@ -24,11 +24,3 @@ local options = {
 }
 
 require("conform").setup(options)
-
--- require("conform").formatters.sqlfluff = {
---   inherit = true,
---   command = "sqlfluff",
---   args = { "format", "--dialect", "postgres" },
---   lsp_fallback = true,
---   stdin = false,
--- }

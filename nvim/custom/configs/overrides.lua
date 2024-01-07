@@ -43,7 +43,6 @@ M.mason = {
 		"bibtex-tidy",
 		"css-lsp",
 		"cssmodules-language-server",
-		"deno",
 		"docker-compose-language-service",
 		"dockerfile-language-server",
 		"gitlint",
@@ -76,7 +75,6 @@ M.nvimtree = {
 	git = {
 		enable = true,
 	},
-
 	renderer = {
 		highlight_git = true,
 		icons = {
