@@ -37,8 +37,9 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 alias cat='bat --theme=ansi'
 alias cel='conda env list'
-alias config-zsh='vi ~/.zshrc && unalias -m "*" && source ~/.zshrc'
-alias dotfiles='cd ~/dotfiles && vi .'
+alias config-zsh='nvim ~/.zshrc && unalias -m "*" && source ~/.zshrc'
+alias dev='export AWS_PROFILE=development EXECUTION_ENVIRONMENT=development && echo "AWS_PROFILE: $AWS_PROFILE" "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT" && tailscale switch dd3tech-sandbox.org.github'
+alias dotfiles='cd ~/dotfiles && nvim .'
 alias gd='ydiff -s -p cat'
 alias gignored='git ls-files . --ignored --exclude-standard --others'
 alias guntracked='git ls-files . --exclude-standard --others'
@@ -46,10 +47,11 @@ alias ls='eza'
 alias nb='code'
 alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killall Dock'
 alias pip-reqs='pip freeze --exclude-editable > requirements.txt'
+alias prod='export AWS_PROFILE=production EXECUTION_ENVIRONMENT=production && echo "AWS_PROFILE: $AWS_PROFILE" "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT" && tailscale switch dd3tech.org.github'
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias size='du -shc * | grep total'
 alias tree='eza --tree'
-alias vi='nvim'
+alias vi='nvim .'
 
 function cnew() {
     conda create -n "$1" python="$2" -y &&
@@ -89,18 +91,6 @@ function fcd() {
 function nd() {
     mkdir -p -- "$1" &&
         cd -P -- "$1"
-}
-
-function py-dev() {
-    export AWS_PROFILE=development
-    export EXECUTION_ENVIRONMENT=development
-    python $1
-}
-
-function py-prod() {
-    export AWS_PROFILE=production
-    export EXECUTION_ENVIRONMENT=production
-    python $1
 }
 
 function sysupdate() {

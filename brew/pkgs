@@ -40,6 +40,7 @@ brew "lua-language-server"
 brew "marksman"
 brew "neofetch"
 brew "neovim"
+brew "ollama", restart_service: true
 brew "onefetch"
 brew "pandoc"
 brew "pkg-config"
