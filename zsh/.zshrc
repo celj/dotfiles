@@ -3,7 +3,6 @@ export MACHINE=mac-n-cheese
 zstyle ':omz:update' mode auto
 
 eval "$(conda "shell.$(basename "${SHELL}")" hook)"
-eval $(thefuck --alias)
 
 export BREW_FILE=~/dotfiles/brew/pkgs
 export CPPFLAGS=-I/opt/homebrew/opt/openssl/include
@@ -29,6 +28,7 @@ plugins=(
     git
     macos
     python
+    qrcode
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -38,7 +38,7 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 alias cat='bat --theme=ansi'
 alias cel='conda env list'
 alias config-zsh='nvim ~/.zshrc && unalias -m "*" && source ~/.zshrc'
-alias dev='export AWS_PROFILE=development EXECUTION_ENVIRONMENT=development && echo "AWS_PROFILE: $AWS_PROFILE" "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT" && tailscale switch dd3tech-sandbox.org.github'
+alias dev='export AWS_PROFILE=development EXECUTION_ENVIRONMENT=development && echo "AWS_PROFILE: $AWS_PROFILE" && echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT" && tailscale switch dd3tech-sandbox.org.github'
 alias dotfiles='cd ~/dotfiles && nvim .'
 alias gd='ydiff -s -p cat'
 alias gignored='git ls-files . --ignored --exclude-standard --others'
@@ -47,11 +47,11 @@ alias ls='eza'
 alias nb='code'
 alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killall Dock'
 alias pip-reqs='pip freeze --exclude-editable > requirements.txt'
-alias prod='export AWS_PROFILE=production EXECUTION_ENVIRONMENT=production && echo "AWS_PROFILE: $AWS_PROFILE" "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT" && tailscale switch dd3tech.org.github'
+alias prod='export AWS_PROFILE=production EXECUTION_ENVIRONMENT=production && echo "AWS_PROFILE: $AWS_PROFILE" && echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT" && tailscale switch dd3tech.org.github'
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias size='du -shc * | grep total'
 alias tree='eza --tree'
-alias vi='nvim .'
+alias vi='nvim +"Telescope find_files"'
 
 function cnew() {
     conda create -n "$1" python="$2" -y &&

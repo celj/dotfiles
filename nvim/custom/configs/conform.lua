@@ -20,6 +20,7 @@ local options = {
 		typst = { "typstfmt" },
 		xml = { "xmlformat" },
 		yaml = { "prettier" },
+		go = { "gofmt" },
 	},
 }
 
