@@ -3,6 +3,7 @@ local options = {
 
 	formatters_by_ft = {
 		css = { "prettier" },
+		go = { "gofmt" },
 		graphql = { "prettier" },
 		html = { "prettier" },
 		javascript = { "prettier" },
@@ -20,7 +21,6 @@ local options = {
 		typst = { "typstfmt" },
 		xml = { "xmlformat" },
 		yaml = { "prettier" },
-		go = { "gofmt" },
 	},
 }
 

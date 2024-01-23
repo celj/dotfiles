@@ -51,12 +51,17 @@ alias prod='export AWS_PROFILE=production EXECUTION_ENVIRONMENT=production && ec
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias size='du -shc * | grep total'
 alias tree='eza --tree'
-alias vi='nvim +"Telescope find_files"'
+alias vi='nvim'
+
+function install_ruff() {
+  pip install ruff ruff-lsp
+}
 
 function cnew() {
     conda create -n "$1" python="$2" -y &&
         conda deactivate &&
         conda activate "$1" &&
+        install_ruff &&
         conda env list
 }
 
@@ -74,6 +79,7 @@ function crp() {
         conda create -n "$1" python="$2" -y &&
         conda deactivate &&
         conda activate "$1" &&
+        install_ruff &&
         conda env list
 }
 
