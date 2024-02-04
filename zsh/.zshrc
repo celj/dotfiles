@@ -36,7 +36,7 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 alias cat='bat --theme=ansi'
-alias cel='conda env list'
+alias cinfo='conda env list'
 alias config-zsh='nvim ~/.zshrc && unalias -m "*" && source ~/.zshrc'
 alias dev='export AWS_PROFILE=development EXECUTION_ENVIRONMENT=development && echo "AWS_PROFILE: $AWS_PROFILE" && echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT" && tailscale switch dd3tech-sandbox.org.github'
 alias dotfiles='cd ~/dotfiles && nvim .'
@@ -53,23 +53,23 @@ alias size='du -shc * | grep total'
 alias tree='eza --tree'
 alias vi='nvim'
 
-function install_ruff() {
-  pip install ruff ruff-lsp
+function install_py_deps() {
+  pip install poetry python-dotenv ruff ruff-lsp
 }
 
 function cnew() {
     conda create -n "$1" python="$2" -y &&
         conda deactivate &&
         conda activate "$1" &&
-        install_ruff &&
-        conda env list
+        install_py_deps &&
+        cinfo
 }
 
 function crm() {
     conda deactivate &&
         conda activate base &&
         conda env remove -n "$1" -y &&
-        conda env list
+        cinfo
 }
 
 function crp() {
@@ -79,14 +79,14 @@ function crp() {
         conda create -n "$1" python="$2" -y &&
         conda deactivate &&
         conda activate "$1" &&
-        install_ruff &&
-        conda env list
+        install_py_deps &&
+        cinfo
 }
 
 function csw() {
     conda deactivate &&
         conda activate "$1" &&
-        conda env list
+        cinfo
 }
 
 function fcd() {
