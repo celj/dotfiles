@@ -44,7 +44,7 @@ mkdir -p ~/.warp/themes
 ln -sf ~/dotfiles/warp/rose-pine.yaml ~/.warp/themes/rose-pine.yaml
 ```
 
-### ZSH 🐚
+### Zsh 🐚
 
 ```shell
 rm -f ~/.zshrc
