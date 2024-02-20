@@ -25,33 +25,28 @@ brew bundle cleanup --force --file=~/dotfiles/brew/pkgs
 
 ## Symlink files
 
-### git
+### git 🐛
 
 ```shell
 ln -sf ~/dotfiles/git/* ~/
 ```
 
-### neovim
+### starship 🚀
 
 ```shell
-git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
-rm -rf ~/.config/nvim/lua/custom
-rm -rf ~/.local/share/nvim
-mkdir -p ~/.config/nvim/lua/custom
-ln -sf ~/dotfiles/nvim/custom ~/.config/nvim/lua
+ln -sf ~/dotfiles/starship/config.toml ~/.config/starship.toml
 ```
 
-### warp
+### warp 🦀
 
 ```shell
 mkdir -p ~/.warp/themes
 ln -sf ~/dotfiles/warp/rose-pine.yaml ~/.warp/themes/rose-pine.yaml
 ```
 
-### zsh
+### zsh 🐚
 
 ```shell
 rm -f ~/.zshrc
 ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
-ln -sf ~/dotfiles/zsh/lezama.zsh-theme ~/.oh-my-zsh/themes/lezama.zsh-theme
 ```
