@@ -50,7 +50,7 @@ alias pip-reqs='pip freeze --exclude-editable > requirements.txt'
 alias prod='export AWS_PROFILE=production EXECUTION_ENVIRONMENT=production && echo "AWS_PROFILE: $AWS_PROFILE" && echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT" && tailscale switch dd3tech.org.github'
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias size='du -shc * | grep total'
-alias tree='eza --tree'
+alias tree='eza --tree --all --ignore-glob .git'
 alias vi='nvim'
 
 function install_py_deps() {
