@@ -2,7 +2,9 @@ export MACHINE=mac-n-cheese
 
 zstyle ':omz:update' mode auto
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(conda "shell.$(basename "${SHELL}")" hook)"
+eval "$(starship init zsh)"
 
 export BREW_FILE=~/dotfiles/brew/pkgs
 export CPPFLAGS=-I/opt/homebrew/opt/openssl/include
@@ -21,8 +23,6 @@ export NVM_DIR='$HOME/.nvm'
 [ -s '/opt/homebrew/opt/nvm/nvm.sh' ] && \. '/opt/homebrew/opt/nvm/nvm.sh'
 [ -s '/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm' ] && \. '/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm'
 
-ZSH_THEME='lezama'
-
 plugins=(
     aliases
     git
@@ -37,9 +37,9 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 alias cat='bat --theme=ansi'
 alias cinfo='conda env list'
-alias config-zsh='nvim ~/.zshrc && unalias -m "*" && source ~/.zshrc'
+alias config-zsh='code --wait ~/.zshrc && unalias -m "*" && source ~/.zshrc'
 alias dev='export AWS_PROFILE=development EXECUTION_ENVIRONMENT=development && echo "AWS_PROFILE: $AWS_PROFILE" && echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT" && tailscale switch dd3tech-sandbox.org.github'
-alias dotfiles='cd ~/dotfiles && nvim .'
+alias dotfiles='cd ~/dotfiles && code --wait .'
 alias gd='ydiff -s -p cat'
 alias gignored='git ls-files . --ignored --exclude-standard --others'
 alias guntracked='git ls-files . --exclude-standard --others'
@@ -54,7 +54,7 @@ alias tree='eza --tree'
 alias vi='nvim'
 
 function install_py_deps() {
-  pip install poetry python-dotenv ruff ruff-lsp
+    pip install poetry python-dotenv ruff ruff-lsp
 }
 
 function cnew() {

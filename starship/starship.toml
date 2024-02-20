@@ -1,0 +1,117 @@
+format = """
+[](#c4a7e7)\
+$username\
+[](bg:#ea6f92 fg:#c4a7e7)\
+$directory\
+[](fg:#ea6f92 bg:#eabcba)\
+$git_branch\
+$git_status\
+[](fg:#eabcba bg:#9dced9)\
+$c\
+$elixir\
+$elm\
+$golang\
+$gradle\
+$haskell\
+$java\
+$julia\
+$nodejs\
+$nim\
+$rust\
+$scala\
+[](fg:#9dced9 bg:#31738f)\
+$docker_context\
+[ ](fg:#31738f bg:#191724)\
+"""
+
+[username]
+disabled = false
+format = '[ $user ]($style)'
+show_always = true
+style_root = "bg:#c4a7e7"
+style_user = "bg:#c4a7e7"
+
+[directory]
+format = "[ $path ]($style)"
+style = "bg:#ea6f92"
+truncation_length = 3
+truncation_symbol = ".../"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+
+[c]
+symbol = " "
+style = "bg:#9dced9"
+format = '[ $symbol ($version) ]($style)'
+
+[docker_context]
+symbol = " "
+style = "bg:#31738f"
+format = '[ $symbol $context ]($style)'
+
+[elixir]
+symbol = " "
+style = "bg:#9dced9"
+format = '[ $symbol ($version) ]($style)'
+
+[elm]
+symbol = " "
+style = "bg:#9dced9"
+format = '[ $symbol ($version) ]($style)'
+
+[git_branch]
+symbol = ""
+style = "bg:#eabcba"
+format = '[ $symbol $branch ]($style)'
+
+[git_status]
+style = "bg:#eabcba"
+format = '[$all_status$ahead_behind ]($style)'
+
+[golang]
+symbol = " "
+style = "bg:#9dced9"
+format = '[ $symbol ($version) ]($style)'
+
+[gradle]
+style = "bg:#9dced9"
+format = '[ $symbol ($version) ]($style)'
+
+[haskell]
+symbol = " "
+style = "bg:#9dced9"
+format = '[ $symbol ($version) ]($style)'
+
+[java]
+symbol = " "
+style = "bg:#9dced9"
+format = '[ $symbol ($version) ]($style)'
+
+[julia]
+symbol = " "
+style = "bg:#9dced9"
+format = '[ $symbol ($version) ]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:#9dced9"
+format = '[ $symbol ($version) ]($style)'
+
+[nim]
+symbol = "󰆥 "
+style = "bg:#9dced9"
+format = '[ $symbol ($version) ]($style)'
+
+[rust]
+symbol = ""
+style = "bg:#9dced9"
+format = '[ $symbol ($version) ]($style)'
+
+[scala]
+symbol = " "
+style = "bg:#9dced9"
+format = '[ $symbol ($version) ]($style)'
