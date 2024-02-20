@@ -25,26 +25,26 @@ brew bundle cleanup --force --file=~/dotfiles/brew/pkgs
 
 ## Symlink files
 
-### git 🐛
+### Git 🐛
 
 ```shell
 ln -sf ~/dotfiles/git/* ~/
 ```
 
-### starship 🚀
+### Starship 🚀
 
 ```shell
 ln -sf ~/dotfiles/starship/config.toml ~/.config/starship.toml
 ```
 
-### warp 🦀
+### Warp 🦀
 
 ```shell
 mkdir -p ~/.warp/themes
 ln -sf ~/dotfiles/warp/rose-pine.yaml ~/.warp/themes/rose-pine.yaml
 ```
 
-### zsh 🐚
+### ZSH 🐚
 
 ```shell
 rm -f ~/.zshrc
