@@ -1,117 +1,46 @@
 format = """
-[](#c4a7e7)\
 $username\
-[](bg:#ea6f92 fg:#c4a7e7)\
+$hostname\
 $directory\
-[](fg:#ea6f92 bg:#eabcba)\
 $git_branch\
+$git_state\
 $git_status\
-[](fg:#eabcba bg:#9dced9)\
-$c\
-$elixir\
-$elm\
-$golang\
-$gradle\
-$haskell\
-$java\
-$julia\
-$nodejs\
-$nim\
-$rust\
-$scala\
-[](fg:#9dced9 bg:#31738f)\
-$docker_context\
-[ ](fg:#31738f bg:#191724)\
-"""
-
-[username]
-disabled = false
-format = '[ $user ]($style)'
-show_always = true
-style_root = "bg:#c4a7e7"
-style_user = "bg:#c4a7e7"
+$cmd_duration\
+$line_break\
+$python\
+$character"""
 
 [directory]
-format = "[ $path ]($style)"
-style = "bg:#ea6f92"
-truncation_length = 3
-truncation_symbol = ".../"
+style = "blue"
 
-[directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = " "
-"Pictures" = " "
-
-[c]
-symbol = " "
-style = "bg:#9dced9"
-format = '[ $symbol ($version) ]($style)'
-
-[docker_context]
-symbol = " "
-style = "bg:#31738f"
-format = '[ $symbol $context ]($style)'
-
-[elixir]
-symbol = " "
-style = "bg:#9dced9"
-format = '[ $symbol ($version) ]($style)'
-
-[elm]
-symbol = " "
-style = "bg:#9dced9"
-format = '[ $symbol ($version) ]($style)'
+[character]
+success_symbol = "[❯](purple)"
+error_symbol = "[❯](red)"
+vimcmd_symbol = "[❮](green)"
 
 [git_branch]
-symbol = ""
-style = "bg:#eabcba"
-format = '[ $symbol $branch ]($style)'
+format = "[$branch]($style)"
+style = "bright-black"
 
 [git_status]
-style = "bg:#eabcba"
-format = '[$all_status$ahead_behind ]($style)'
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
+style = "cyan"
+conflicted = "​"
+untracked = "​"
+modified = "​"
+staged = "​"
+renamed = "​"
+deleted = "​"
+stashed = "≡"
 
-[golang]
-symbol = " "
-style = "bg:#9dced9"
-format = '[ $symbol ($version) ]($style)'
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
 
-[gradle]
-style = "bg:#9dced9"
-format = '[ $symbol ($version) ]($style)'
+[cmd_duration]
+format = "[$duration]($style) "
+style = "yellow"
 
-[haskell]
-symbol = " "
-style = "bg:#9dced9"
-format = '[ $symbol ($version) ]($style)'
-
-[java]
-symbol = " "
-style = "bg:#9dced9"
-format = '[ $symbol ($version) ]($style)'
-
-[julia]
-symbol = " "
-style = "bg:#9dced9"
-format = '[ $symbol ($version) ]($style)'
-
-[nodejs]
-symbol = ""
-style = "bg:#9dced9"
-format = '[ $symbol ($version) ]($style)'
-
-[nim]
-symbol = "󰆥 "
-style = "bg:#9dced9"
-format = '[ $symbol ($version) ]($style)'
-
-[rust]
-symbol = ""
-style = "bg:#9dced9"
-format = '[ $symbol ($version) ]($style)'
-
-[scala]
-symbol = " "
-style = "bg:#9dced9"
-format = '[ $symbol ($version) ]($style)'
+[python]
+format = "[$virtualenv]($style) "
+style = "bright-black"
