@@ -3,7 +3,6 @@ export MACHINE=mac-n-cheese
 zstyle ':omz:update' mode auto
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
-eval "$(conda "shell.$(basename "${SHELL}")" hook)"
 eval "$(starship init zsh)"
 
 export BREW_FILE=~/dotfiles/brew/pkgs
@@ -35,58 +34,37 @@ source $ZSH/oh-my-zsh.sh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+alias activate='source .venv/bin/activate'
 alias cat='bat --theme=ansi'
-alias cinfo='conda env list'
-alias config-zsh='code --wait ~/.zshrc && unalias -m "*" && source ~/.zshrc'
 alias dev='export AWS_PROFILE=development EXECUTION_ENVIRONMENT=development && echo "AWS_PROFILE: $AWS_PROFILE" && echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT" && tailscale switch dd3tech-sandbox.org.github'
-alias dotfiles='cd ~/dotfiles && code --wait .'
+alias dotfiles='cd ~/dotfiles && code --new-window --wait .'
 alias gd='ydiff -s -p cat'
 alias gignored='git ls-files . --ignored --exclude-standard --others'
 alias guntracked='git ls-files . --exclude-standard --others'
 alias ls='eza'
-alias nb='code'
 alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killall Dock'
-alias pip-reqs='pip freeze --exclude-editable > requirements.txt'
+alias pip-reqs='uv pip freeze --exclude-editable > requirements.txt'
 alias prod='export AWS_PROFILE=production EXECUTION_ENVIRONMENT=production && echo "AWS_PROFILE: $AWS_PROFILE" && echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT" && tailscale switch dd3tech.org.github'
 alias randpw='openssl rand -base64 12 | pbcopy'
+alias repo-info='onefetch --no-art --no-color-palette && tokei && scc'
 alias size='du -shc * | grep total'
 alias tree='eza --tree --all --ignore-glob .git'
 alias vi='nvim'
+alias zsh-config='code --new-window --wait ~/.zshrc && unalias -m "*" && source ~/.zshrc'
 
-function install_py_deps() {
-    pip install poetry python-dotenv ruff ruff-lsp
+function pydeps() {
+    pip install --quiet --upgrade pip
+    pip install --quiet poetry python-dotenv
 }
 
-function cnew() {
-    conda create -n "$1" python="$2" -y &&
-        conda deactivate &&
-        conda activate "$1" &&
-        install_py_deps &&
-        cinfo
-}
-
-function crm() {
-    conda deactivate &&
-        conda activate base &&
-        conda env remove -n "$1" -y &&
-        cinfo
-}
-
-function crp() {
-    conda deactivate &&
-        conda activate base &&
-        conda env remove -n "$1" -y &&
-        conda create -n "$1" python="$2" -y &&
-        conda deactivate &&
-        conda activate "$1" &&
-        install_py_deps &&
-        cinfo
-}
-
-function csw() {
-    conda deactivate &&
-        conda activate "$1" &&
-        cinfo
+function venv() {
+    rm -rf .venv
+    rm -f *.lock
+    virtualenv --quiet .venv --python="$1"
+    activate
+    pydeps
+    echo "Virtual environment set to $(python --version)"
+    which python
 }
 
 function fcd() {
