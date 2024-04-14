@@ -7,6 +7,7 @@ eval "$(starship init zsh)"
 
 export BREW_FILE=~/dotfiles/brew/pkgs
 export CPPFLAGS=-I/opt/homebrew/opt/openssl/include
+export EDITOR=hx
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LDFLAGS=-L/opt/homebrew/opt/openssl/lib
@@ -17,6 +18,7 @@ export PATH=/usr/local/bin:$PATH
 export PATH=~/.cargo/bin:$PATH
 export PATH=~/.local/bin:$PATH
 export PKG_CONFIG_PATH=/opt/homebrew/opt/openssl/lib/pkgconfig
+export VISUAL=$EDITOR
 export ZSH=~/.oh-my-zsh
 
 export NVM_DIR='$HOME/.nvm'
@@ -51,7 +53,6 @@ alias prod='set_environment production dd3tech.org.github'
 alias activate='source venv/bin/activate'
 alias cat='bat --theme=ansi'
 alias dotfiles='vi ~/dotfiles'
-alias gd='ydiff -s -p cat'
 alias gignored='git ls-files --cached --ignored --exclude-standard -z | xargs -0 git rm --cached'
 alias guntracked='git ls-files . --exclude-standard --others'
 alias ls='eza'

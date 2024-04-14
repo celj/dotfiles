@@ -1,5 +1,6 @@
 [core]
 excludesfile = /Users/carlos/.gitignore
+pager = delta
 
 [includeIf "gitdir:~/Documents/work/"]
 path = ~/.gitconfig-work
@@ -9,3 +10,18 @@ path = ~/.gitconfig-personal
 
 [includeIf "gitdir:~/dotfiles/"]
 path = ~/.gitconfig-personal
+
+[interactive]
+diffFilter = delta --color-only
+
+[delta]
+navigate = true
+side-by-side = true
+line-numbers = true
+syntax-theme = base16
+
+[merge]
+conflictstyle = diff3
+
+[diff]
+colorMoved = default
