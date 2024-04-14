@@ -1,0 +1,12 @@
+[language-server.ruff]
+command = "ruff-lsp"
+
+[[language]]
+name = "python"
+language-servers = [ "ruff" ]
+auto-format = true
+
+[[language]]
+name = "sql"
+auto-format = true
+formatter = { command = "sqlfluff", args = ["fix", "--dialect", "postgres", "-"] }
