@@ -11,6 +11,7 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LDFLAGS=-L/opt/homebrew/opt/openssl/lib
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export PATH=$(brew --prefix)/opt/llvm/bin:$PATH
 export PATH=/opt/homebrew/opt/postgresql@15/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=~/.cargo/bin:$PATH
@@ -28,39 +29,51 @@ plugins=(
     macos
     python
     qrcode
+    terraform
 )
 
 source $ZSH/oh-my-zsh.sh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-alias activate='source .venv/bin/activate'
+function set_environment() {
+    export AWS_PROFILE=$1
+    export EXECUTION_ENVIRONMENT=$1
+    echo "AWS_PROFILE: $AWS_PROFILE"
+    echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT"
+    tailscale up
+    tailscale switch $2
+}
+
+alias dev='set_environment development dd3tech-sandbox.org.github'
+alias prod='set_environment production dd3tech.org.github'
+
+alias activate='source venv/bin/activate'
 alias cat='bat --theme=ansi'
-alias dev='export AWS_PROFILE=development EXECUTION_ENVIRONMENT=development && echo "AWS_PROFILE: $AWS_PROFILE" && echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT" && tailscale switch dd3tech-sandbox.org.github'
-alias dotfiles='cd ~/dotfiles && code --new-window --wait .'
+alias dotfiles='vi ~/dotfiles'
 alias gd='ydiff -s -p cat'
-alias gignored='git ls-files . --ignored --exclude-standard --others'
+alias gignored='git ls-files --cached --ignored --exclude-standard -z | xargs -0 git rm --cached'
 alias guntracked='git ls-files . --exclude-standard --others'
 alias ls='eza'
 alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killall Dock'
 alias pip-reqs='uv pip freeze --exclude-editable > requirements.txt'
-alias prod='export AWS_PROFILE=production EXECUTION_ENVIRONMENT=production && echo "AWS_PROFILE: $AWS_PROFILE" && echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT" && tailscale switch dd3tech.org.github'
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias repo-info='onefetch --no-art --no-color-palette && tokei && scc'
 alias size='du -shc * | grep total'
-alias tree='eza --tree --all --ignore-glob .git'
-alias vi='nvim'
-alias zsh-config='code --new-window --wait ~/.zshrc && unalias -m "*" && source ~/.zshrc'
+alias tree='eza --tree --all --git --ignore-glob ".git|venv|.DS_Store|target"'
+alias vi='hx'
+alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zshrc'
 
 function pydeps() {
-    pip install --quiet --upgrade pip
-    pip install --quiet poetry python-dotenv
+    pip install --upgrade pip
+    pip install notebook poetry python-dotenv
 }
 
 function venv() {
-    rm -rf .venv
     rm -f *.lock
-    virtualenv --quiet .venv --python="$1"
+    rm -rf .venv
+    rm -rf venv
+    virtualenv --verbose venv --python="$1"
     activate
     pydeps
     echo "Virtual environment set to $(python --version)"
