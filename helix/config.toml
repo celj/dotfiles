@@ -9,6 +9,10 @@ lsp.display-inlay-hints = false
 rulers = [80, 120]
 true-color = true
 
+[editor.soft-wrap]
+enable = true
+wrap-indicator = ""
+
 [editor.cursor-shape]
 insert = "bar"
 normal = "block"
