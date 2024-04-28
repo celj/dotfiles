@@ -15,10 +15,10 @@ path = ~/.gitconfig-personal
 diffFilter = delta --color-only
 
 [delta]
-navigate = true
+navigate = false
 side-by-side = true
 line-numbers = true
-syntax-theme = base16
+syntax-theme = ansi
 
 [merge]
 conflictstyle = diff3
