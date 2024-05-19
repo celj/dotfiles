@@ -63,6 +63,7 @@ alias repo-info='onefetch --no-art --no-color-palette && tokei && scc'
 alias size='du -shc * | grep total'
 alias tree='eza --tree --all --git --ignore-glob ".git|venv|.DS_Store|target"'
 alias vi='hx'
+alias workspace='code ~/Documents/work/workspace'
 alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zshrc'
 
 function pydeps() {
@@ -135,7 +136,7 @@ function syncsys() {
         if [ "$1" != "" ]; then
             git commit -m "$1"
         else
-            git commit -m update
+            git commit -m "sync update 🚀"
         fi
         git push
     else

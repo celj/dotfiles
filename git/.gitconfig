@@ -18,7 +18,7 @@ diffFilter = delta --color-only
 navigate = false
 side-by-side = true
 line-numbers = true
-syntax-theme = ansi
+syntax-theme = "Solarized (dark)"
 
 [merge]
 conflictstyle = diff3
