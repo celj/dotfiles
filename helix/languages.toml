@@ -1,12 +1,20 @@
+[[language]]
+name = "python"
+language-servers = [ "pyright", "ruff" ]
+auto-format = true
+
 [language-server.ruff]
 command = "ruff-lsp"
 
-[[language]]
-name = "python"
-language-servers = [ "ruff" ]
-auto-format = true
+[language-server.ruff.config.settings]
+args = ["--ignore", "E501"]
 
 [[language]]
 name = "sql"
 auto-format = true
-formatter = { command = "sqlfluff", args = ["fix", "--dialect", "postgres", "-"] }
+formatter = { command = "sqlfluff", args = [
+  "fix",
+  "--dialect",
+  "postgres",
+  "-",
+] }
