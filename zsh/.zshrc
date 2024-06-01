@@ -51,8 +51,10 @@ alias dev='set_environment development dd3tech-sandbox.org.github'
 alias prod='set_environment production dd3tech.org.github'
 
 alias activate='source venv/bin/activate'
+alias btm='btm --mem_as_value'
 alias cat='bat --theme=ansi'
 alias dotfiles='vi ~/dotfiles'
+alias gchanges='git ls-files --modified --exclude-standard'
 alias gignored='git ls-files --cached --ignored --exclude-standard -z | xargs -0 git rm --cached'
 alias guntracked='git ls-files . --exclude-standard --others'
 alias ls='eza'
@@ -75,6 +77,7 @@ function venv() {
     rm -f *.lock
     rm -rf .venv
     rm -rf venv
+    rm -rf .ruff_cache
     virtualenv --verbose venv --python="$1"
     activate
     pydeps

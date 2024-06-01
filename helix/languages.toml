@@ -1,6 +1,6 @@
 [[language]]
 name = "python"
-language-servers = [ "pyright", "ruff" ]
+language-servers = ["pyright", "ruff"]
 auto-format = true
 
 [language-server.ruff]
@@ -14,6 +14,8 @@ name = "sql"
 auto-format = true
 formatter = { command = "sqlfluff", args = [
   "fix",
+  "--exclude-rules",
+  "ST06",
   "--dialect",
   "postgres",
   "-",

@@ -4,10 +4,12 @@ theme = "carlos"
 auto-save = true
 bufferline = "multiple"
 color-modes = true
-line-number = "absolute"
-lsp.display-inlay-hints = false
+line-number = "relative"
 rulers = [80, 120]
 true-color = true
+
+[editor.lsp]
+display-inlay-hints = true
 
 [editor.soft-wrap]
 enable = true
