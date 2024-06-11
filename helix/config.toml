@@ -5,7 +5,6 @@ auto-save = true
 bufferline = "multiple"
 color-modes = true
 line-number = "relative"
-rulers = [80, 120]
 true-color = true
 
 [editor.lsp]
