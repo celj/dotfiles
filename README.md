@@ -44,13 +44,6 @@ ln -sf ~/dotfiles/helix/* ~/.config/helix/
 ln -sf ~/dotfiles/starship/config.toml ~/.config/starship.toml
 ```
 
-### warp 🦀
-
-```shell
-mkdir -p ~/.warp/themes
-ln -sf ~/dotfiles/warp/rose-pine.yaml ~/.warp/themes/rose-pine.yaml
-```
-
 ### zsh 🐚
 
 ```shell
