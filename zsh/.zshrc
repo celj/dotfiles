@@ -59,12 +59,14 @@ alias gignored='git ls-files --cached --ignored --exclude-standard -z | xargs -0
 alias guntracked='git ls-files . --exclude-standard --others'
 alias ls='eza'
 alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killall Dock'
+alias personal='cd ~/Documents && l'
 alias pip-reqs='uv pip freeze --exclude-editable > requirements.txt'
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias repo-info='onefetch --no-art --no-color-palette && tokei && scc'
 alias size='du -shc * | grep total'
 alias tree='eza --tree --all --git --ignore-glob ".git|venv|.DS_Store|target"'
 alias vi='hx'
+alias work='cd ~/Desktop && l'
 alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zshrc'
 
 function pydeps() {
