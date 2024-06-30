@@ -51,11 +51,11 @@ brew "pnpm"
 brew "postgresql@15", link: true
 brew "pyenv"
 brew "pyright"
-brew "python-packaging", link: false
+brew "python-packaging"
 brew "python@3.10"
 brew "ripgrep"
 brew "ruff", link: false
-brew "ruff-lsp", link: false
+brew "ruff-lsp"
 brew "rustup-init"
 brew "scc"
 brew "shfmt"
