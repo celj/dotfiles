@@ -1,7 +1,16 @@
 [[language]]
 name = "python"
-language-servers = ["pyright", "ruff"]
 auto-format = true
+language-servers = [
+  { name = "pyright", except-features = [
+    "format",
+    "diagnostics",
+  ] },
+  { name = "ruff", only-features = [
+    "format",
+    "diagnostics",
+  ] },
+]
 
 [language-server.ruff]
 command = "ruff-lsp"
