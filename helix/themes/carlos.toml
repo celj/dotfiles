@@ -1,2 +1,2 @@
-inherits = "solarized_dark"
+inherits = "github_dark"
 "ui.background" = {}
