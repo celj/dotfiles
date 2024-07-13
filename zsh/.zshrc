@@ -52,6 +52,7 @@ alias prod='set_environment production dd3tech.org.github'
 
 alias activate='source venv/bin/activate'
 alias btm='btm --mem_as_value'
+alias c='code'
 alias cat='bat --theme=ansi'
 alias dotfiles='vi ~/dotfiles'
 alias gchanges='git ls-files --modified --exclude-standard'
@@ -60,30 +61,51 @@ alias guntracked='git ls-files . --exclude-standard --others'
 alias ls='eza'
 alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killall Dock'
 alias personal='cd ~/Documents && l'
-alias pip-reqs='uv pip freeze --exclude-editable > requirements.txt'
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias repo-info='onefetch --no-art --no-color-palette && tokei && scc'
 alias size='du -shc * | grep total'
-alias tree='eza --tree --all --git --ignore-glob ".git|venv|.DS_Store|target"'
+alias tree='eza --tree --all --git --ignore-glob ".DS_Store|.git|.next|.ruff_cache|.venv|__pycache__|node_modules|target|venv"'
 alias vi='hx'
 alias work='cd ~/Desktop && l'
 alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zshrc'
 
-function pydeps() {
-    pip install --upgrade pip
-    pip install notebook poetry python-dotenv
+function pyactivate() {
+    activate
 }
 
-function venv() {
-    rm -f *.lock
-    rm -rf .venv
-    rm -rf venv
-    rm -rf .ruff_cache
-    virtualenv --verbose venv --python="$1"
-    activate
-    pydeps
+function pyclean() {
+    rm -rf *.lock .venv venv .ruff_cache
+}
+
+function pydeps() {
+    uv pip install --upgrade pip
+    uv pip install notebook poetry python-dotenv ruff
+}
+
+function pyinfo() {
     echo "Virtual environment set to $(python --version)"
     which python
+}
+
+function pyreqs() {
+    if [ -f "pyproject.toml" ]; then
+        poetry install
+    elif [ -f "requirements.txt" ]; then
+        uv pip install -r requirements.txt
+    fi
+}
+
+function pyvenv() {
+    uv venv --python="$1" venv
+}
+
+function pyinit() {
+    pyclean
+    pyvenv "$1"
+    activate
+    pydeps
+    pyreqs
+    pyinfo
 }
 
 function fcd() {
@@ -154,3 +176,11 @@ function syncsys() {
         sysupdate
     fi
 }
+
+# pnpm
+export PNPM_HOME="/Users/carlos/Library/pnpm"
+case ":$PATH:" in
+*":$PNPM_HOME:"*) ;;
+*) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
