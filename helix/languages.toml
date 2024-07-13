@@ -1,6 +1,6 @@
 [[language]]
 name = "python"
-auto-format = true
+auto-format = false
 language-servers = [
   { name = "pyright", except-features = [
     "format",
@@ -20,7 +20,7 @@ args = ["--ignore", "E501"]
 
 [[language]]
 name = "sql"
-auto-format = true
+auto-format = false
 formatter = { command = "sqlfluff", args = [
   "fix",
   "--exclude-rules",
