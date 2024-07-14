@@ -92,6 +92,9 @@ function pyreqs() {
         poetry install
     elif [ -f "requirements.txt" ]; then
         uv pip install -r requirements.txt
+    elif [ -f "requirements.txt" ] && [ -f "pyproject.toml" ]; then
+        uv pip install -r requirements.txt
+        poetry install
     fi
 }
 
