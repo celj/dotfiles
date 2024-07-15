@@ -8,7 +8,7 @@ path = ~/.gitconfig-work
 [includeIf "gitdir:~/Documents/"]
 path = ~/.gitconfig-personal
 
-[includeIf "gitdir:~/dotfiles/"]
+[includeIf "gitdir:~/.dotfiles/"]
 path = ~/.gitconfig-personal
 
 [interactive]
