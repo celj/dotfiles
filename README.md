@@ -6,14 +6,14 @@ First, install `brew` and `git`.
 
 ```shell
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install git
+brew install git gh
 ```
 
-Then, clone this repo into home directory (`~` or `$HOME`).
+Then, clone this repo into home directory (`~` or `$HOME`) to `.dotfiles`.
 
 ```shell
 cd ~
-git clone https://github.com/celj/dotfiles.git ~/dotfiles
+gh repo clone celj/dotfiles ~/.dotfiles
 ```
 
 ## Packages needed
@@ -25,28 +25,6 @@ brew bundle cleanup --force --file=~/dotfiles/brew/pkgs
 
 ## Symlink files
 
-### git 🐛
-
 ```shell
-ln -sf ~/dotfiles/git/* ~/
-```
-
-### helix 🧬
-
-```shell
-mkdir -p ~/.config/helix
-ln -sf ~/dotfiles/helix/* ~/.config/helix/
-```
-
-### starship 🚀
-
-```shell
-ln -sf ~/dotfiles/starship/config.toml ~/.config/starship.toml
-```
-
-### zsh 🐚
-
-```shell
-rm -f ~/.zshrc
-ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
+stow -d $HOME/.dotfiles -t $HOME
 ```
