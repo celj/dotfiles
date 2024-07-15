@@ -5,7 +5,7 @@ zstyle ':omz:update' mode auto
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(starship init zsh)"
 
-export BREW_FILE=~/dotfiles/brew/pkgs
+export BREW_FILE=~/.dotfiles/brew/pkgs
 export CPPFLAGS=-I/opt/homebrew/opt/openssl/include
 export EDITOR=hx
 export LANG=en_US.UTF-8
@@ -54,7 +54,7 @@ alias activate='source venv/bin/activate'
 alias btm='btm --mem_as_value'
 alias c='code'
 alias cat='bat --theme=ansi'
-alias dotfiles='vi ~/dotfiles'
+alias dotfiles='vi ~/.dotfiles'
 alias gchanges='git ls-files --modified --exclude-standard'
 alias gignored='git ls-files --cached --ignored --exclude-standard -z | xargs -0 git rm --cached'
 alias guntracked='git ls-files . --exclude-standard --others'
@@ -160,7 +160,7 @@ function syncsys() {
         echo "Updating system..."
         sysupdate
         echo "Pushing changes to github..."
-        cd ~/dotfiles
+        cd ~/.dotfiles
         git add .
         if [ "$1" != "" ]; then
             git commit -m "$1"
@@ -173,7 +173,7 @@ function syncsys() {
             echo "You are not on the main machine."
         fi
         echo "Pulling changes from github..."
-        cd ~/dotfiles
+        cd ~/.dotfiles
         git pull --rebase
         echo "Updating system..."
         sysupdate

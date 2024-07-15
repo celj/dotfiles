@@ -19,8 +19,8 @@ gh repo clone celj/dotfiles ~/.dotfiles
 ## Packages needed
 
 ```shell
-brew bundle install --all --file=~/dotfiles/brew/pkgs
-brew bundle cleanup --force --file=~/dotfiles/brew/pkgs
+brew bundle install --all --file=~/.dotfiles/brew/pkgs
+brew bundle cleanup --force --file=~/.dotfiles/brew/pkgs
 ```
 
 ## Symlink files
