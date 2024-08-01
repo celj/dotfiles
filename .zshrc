@@ -83,7 +83,7 @@ function pyclean() {
 
 function pydeps() {
   uv pip install --upgrade pip
-  uv pip install notebook poetry pre-commit python-dotenv ruff-lsp
+  uv pip install notebook poetry pre-commit pyright python-dotenv ruff ruff-lsp
 }
 
 function pyinfo() {

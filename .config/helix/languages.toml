@@ -6,17 +6,14 @@ language-servers = [
     "format",
     "diagnostics",
   ] },
-  { name = "ruff", only-features = [
-    "format",
-    "diagnostics",
-  ] },
+  { name = "ruff" },
 ]
 
 [language-server.ruff]
 command = "ruff-lsp"
 
 [language-server.ruff.config.settings]
-args = ["--ignore", "E501"]
+lineLength = 120
 
 [[language]]
 name = "sql"
