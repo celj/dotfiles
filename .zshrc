@@ -26,25 +26,26 @@ export NVM_DIR='$HOME/.nvm'
 [ -s '/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm' ] && \. '/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm'
 
 plugins=(
-    aliases
-    git
-    macos
-    python
-    qrcode
-    terraform
+  aliases
+  git
+  macos
+  python
+  qrcode
+  terraform
 )
 
 source $ZSH/oh-my-zsh.sh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source <(fzf --zsh)
 
 function set_environment() {
-    export AWS_PROFILE=$1
-    export EXECUTION_ENVIRONMENT=$1
-    echo "AWS_PROFILE: $AWS_PROFILE"
-    echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT"
-    tailscale up
-    tailscale switch $2
+  export AWS_PROFILE=$1
+  export EXECUTION_ENVIRONMENT=$1
+  echo "AWS_PROFILE: $AWS_PROFILE"
+  echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT"
+  tailscale up
+  tailscale switch $2
 }
 
 alias dev='set_environment development dd3tech-sandbox.org.github'
@@ -70,120 +71,133 @@ alias work='cd ~/Desktop && l'
 alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zshrc'
 
 function pyactivate() {
-    activate
+  activate
 }
 
 function pyclean() {
-    rm -rf *.lock .venv venv .ruff_cache
+  rm -f *.lock
+  rm -rf .ruff_cache
+  rm -rf .venv
+  rm -rf venv
 }
 
 function pydeps() {
-    uv pip install --upgrade pip
-    uv pip install notebook poetry python-dotenv ruff
+  uv pip install --upgrade pip
+  uv pip install notebook poetry pre-commit python-dotenv ruff-lsp
 }
 
 function pyinfo() {
-    echo "Virtual environment set to $(python --version)"
-    which python
+  echo "Virtual environment set to $(python --version)"
+  which python
 }
 
 function pyreqs() {
-    if [ -f "pyproject.toml" ]; then
-        poetry install
-    elif [ -f "requirements.txt" ]; then
-        uv pip install -r requirements.txt
-    elif [ -f "requirements.txt" ] && [ -f "pyproject.toml" ]; then
-        uv pip install -r requirements.txt
-        poetry install
-    fi
+  if [ -f "pyproject.toml" ]; then
+    poetry install
+  elif [ -f "requirements.txt" ]; then
+    uv pip install -r requirements.txt
+  elif [ -f "requirements.txt" ] && [ -f "pyproject.toml" ]; then
+    uv pip install -r requirements.txt
+    poetry install
+  fi
 }
 
 function pyvenv() {
-    uv venv --python="$1" venv
+  uv venv --python="$1" venv
 }
 
 function pyinit() {
+  force=0
+
+  for arg in "$@"; do
+    if [[ "$arg" == "--force" || "$arg" == "-f" ]]; then
+      force=1
+      break
+    fi
+  done
+
+  if [[ $force -eq 1 ]]; then
     pyclean
-    pyvenv "$1"
-    activate
-    pydeps
-    pyreqs
-    pyinfo
+  fi
+
+  pyvenv "$1"
+  activate
+  pydeps
+  pyreqs
+  pyinfo
 }
 
 function fcd() {
-    local dir
-    dir=$(find ${1:-.} -type d -not -path '*/\.*' 2>/dev/null | fzf +m) && cd "$dir"
+  local dir
+  dir=$(find ${1:-.} -type d -not -path '*/\.*' 2>/dev/null | fzf +m) && cd "$dir"
 }
 
 function nd() {
-    mkdir -p -- "$1" &&
-        cd -P -- "$1"
+  mkdir -p -- "$1" &&
+    cd -P -- "$1"
 }
 
 function sysupdate() {
-    if [[ $(scutil --get LocalHostName) == $MACHINE ]]; then
-        echo "Updating brew packages..."
-        brew update
-        echo "Upgrading brew packages..."
-        brew upgrade
-        echo "Updating brew dump file..."
-        brew bundle dump --force --file=$BREW_FILE
-        echo "Cleaning up brew packages..."
-        brew bundle cleanup --force --file=$BREW_FILE
-        echo "Removing previous aliases..."
-        unalias -m "*"
-        echo "Reloading zsh..."
-        source ~/.zshrc
-        echo "Reloading launchpad ..."
-        new-app
-        echo "System updated!"
-    else
-        echo "Updating brew packages..."
-        brew update
-        echo "Upgrading brew packages..."
-        brew upgrade
-        echo "Cleaning up brew packages..."
-        brew bundle cleanup --force --file=$BREW_FILE
-        echo "Removing previous aliases..."
-        unalias -m "*"
-        echo "Reloading zsh..."
-        source ~/.zshrc
-        echo "Reloading launchpad ..."
-        new-app
-        echo "System updated!"
-    fi
+  if [[ $(scutil --get LocalHostName) == $MACHINE ]]; then
+    echo "Updating brew packages..."
+    brew update
+    echo "Upgrading brew packages..."
+    brew upgrade
+    echo "Updating brew dump file..."
+    brew bundle dump --force --file=$BREW_FILE
+    echo "Cleaning up brew packages..."
+    brew bundle cleanup --force --file=$BREW_FILE
+    echo "Removing previous aliases..."
+    unalias -m "*"
+    echo "Reloading zsh..."
+    source ~/.zshrc
+    echo "Reloading launchpad ..."
+    new-app
+    echo "System updated!"
+  else
+    echo "Updating brew packages..."
+    brew update
+    echo "Upgrading brew packages..."
+    brew upgrade
+    echo "Cleaning up brew packages..."
+    brew bundle cleanup --force --file=$BREW_FILE
+    echo "Removing previous aliases..."
+    unalias -m "*"
+    echo "Reloading zsh..."
+    source ~/.zshrc
+    echo "Reloading launchpad ..."
+    new-app
+    echo "System updated!"
+  fi
 }
 
 function syncsys() {
-    if [[ $(scutil --get LocalHostName) == $MACHINE ]]; then
-        echo "Updating system..."
-        sysupdate
-        echo "Pushing changes to github..."
-        cd ~/.dotfiles
-        git add .
-        if [ "$1" != "" ]; then
-            git commit -m "$1"
-        else
-            git commit -m "sync update 🚀"
-        fi
-        git push
+  if [[ $(scutil --get LocalHostName) == $MACHINE ]]; then
+    echo "Updating system..."
+    sysupdate
+    echo "Pushing changes to github..."
+    cd ~/.dotfiles
+    git add .
+    if [ "$1" != "" ]; then
+      git commit -m "$1"
     else
-        if [ "$1" != "" ]; then
-            echo "You are not on the main machine."
-        fi
-        echo "Pulling changes from github..."
-        cd ~/.dotfiles
-        git pull --rebase
-        echo "Updating system..."
-        sysupdate
+      git commit -m "sync update 🚀"
     fi
+    git push
+  else
+    if [ "$1" != "" ]; then
+      echo "You are not on the main machine."
+    fi
+    echo "Pulling changes from github..."
+    cd ~/.dotfiles
+    git pull --rebase
+    echo "Updating system..."
+    sysupdate
+  fi
 }
 
-# pnpm
-export PNPM_HOME="/Users/carlos/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
 *":$PNPM_HOME:"*) ;;
 *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-# pnpm end
