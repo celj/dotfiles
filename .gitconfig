@@ -1,6 +1,8 @@
+[alias]
+undo = reset --soft HEAD^
+
 [core]
-excludesfile = /Users/carlos/.gitignore
-pager = delta
+excludesfile = ~/.gitignore
 
 [includeIf "gitdir:~/Desktop/"]
 path = ~/.gitconfig-work
@@ -11,17 +13,5 @@ path = ~/.gitconfig-personal
 [includeIf "gitdir:~/.dotfiles/"]
 path = ~/.gitconfig-personal
 
-[interactive]
-diffFilter = delta --color-only
-
-[delta]
-navigate = false
-side-by-side = true
-line-numbers = true
-syntax-theme = "Solarized (dark)"
-
-[merge]
-conflictstyle = diff3
-
-[diff]
-colorMoved = default
+[init]
+defaultBranch = main
