@@ -11,6 +11,7 @@ export EDITOR=hx
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LDFLAGS=-L/opt/homebrew/opt/openssl/lib
+export MYPYDEPS=('notebook' 'poetry' 'pre-commit' 'pyright' 'python-dotenv' 'ruff' 'ruff-lsp')
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export PATH=$(brew --prefix)/opt/llvm/bin:$PATH
 export PATH=/opt/homebrew/opt/postgresql@15/bin:$PATH
@@ -42,8 +43,13 @@ source <(fzf --zsh)
 function set_environment() {
   export AWS_PROFILE=$1
   export EXECUTION_ENVIRONMENT=$1
+
+  export AWS_ACCESS_KEY_ID=$(aws configure get $1.aws_access_key_id)
+  export AWS_SECRET_ACCESS_KEY=$(aws configure get $1.aws_secret_access_key)
+
   echo "AWS_PROFILE: $AWS_PROFILE"
   echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT"
+
   tailscale up
   tailscale switch $2
 }
@@ -51,8 +57,8 @@ function set_environment() {
 alias dev='set_environment development dd3tech-sandbox.org.github'
 alias prod='set_environment production dd3tech.org.github'
 
-alias activate='source venv/bin/activate'
-alias btm='btm --mem_as_value'
+alias activate='source .venv/bin/activate && which python'
+alias btm='btm --process_memory_as_value'
 alias c='code'
 alias cat='bat --theme=ansi'
 alias dotfiles='vi ~/.dotfiles'
@@ -64,7 +70,7 @@ alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killal
 alias personal='cd ~/Documents && l'
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias repo-info='onefetch --no-art --no-color-palette && tokei && scc'
-alias size='du -shc * | grep total'
+alias size='du -shc *'
 alias tree='eza --tree --all --git --ignore-glob ".DS_Store|.git|.next|.ruff_cache|.venv|__pycache__|node_modules|target|venv"'
 alias vi='hx'
 alias work='cd ~/Desktop && l'
@@ -75,15 +81,14 @@ function pyactivate() {
 }
 
 function pyclean() {
-  rm -f *.lock
+  rm -f poetry.lock
   rm -rf .ruff_cache
   rm -rf .venv
-  rm -rf venv
 }
 
 function pydeps() {
   uv pip install --upgrade pip
-  uv pip install notebook poetry pre-commit pyright python-dotenv ruff ruff-lsp
+  uv pip install $MYPYDEPS
 }
 
 function pyinfo() {
@@ -93,17 +98,20 @@ function pyinfo() {
 
 function pyreqs() {
   if [ -f "pyproject.toml" ]; then
-    poetry install
+    if grep -q "poetry" pyproject.toml; then
+      poetry install
+    fi
+    if grep -q "uv" pyproject.toml; then
+      uv lock --python "$1"
+      uv sync --frozen --python "$1"
+    fi
   elif [ -f "requirements.txt" ]; then
     uv pip install -r requirements.txt
-  elif [ -f "requirements.txt" ] && [ -f "pyproject.toml" ]; then
-    uv pip install -r requirements.txt
-    poetry install
   fi
 }
 
 function pyvenv() {
-  uv venv --python="$1" venv
+  uv venv --python="$1" .venv
 }
 
 function pyinit() {
@@ -123,7 +131,7 @@ function pyinit() {
   pyvenv "$1"
   activate
   pydeps
-  pyreqs
+  pyreqs "$1"
   pyinfo
 }
 
