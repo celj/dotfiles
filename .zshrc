@@ -69,7 +69,7 @@ alias ls='eza'
 alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killall Dock'
 alias personal='cd ~/Documents && l'
 alias randpw='openssl rand -base64 12 | pbcopy'
-alias repo-info='onefetch --no-art --no-color-palette && tokei && scc'
+alias repo-info='onefetch --no-art --no-color-palette || true && tokei || true && scc || true'
 alias size='du -shc *'
 alias tree='eza --tree --all --git --ignore-glob ".DS_Store|.git|.next|.ruff_cache|.venv|__pycache__|node_modules|target|venv"'
 alias vi='hx'
@@ -99,7 +99,7 @@ function pyinfo() {
 function pyreqs() {
   if [ -f "pyproject.toml" ]; then
     if grep -q "poetry" pyproject.toml; then
-      poetry install
+      poetry install --no-root
     fi
     if grep -q "uv" pyproject.toml; then
       uv lock --python "$1"
@@ -116,11 +116,13 @@ function pyvenv() {
 
 function pyinit() {
   force=0
+  version=""
 
   for arg in "$@"; do
     if [[ "$arg" == "--force" || "$arg" == "-f" ]]; then
       force=1
-      break
+    elif [[ -z "$version" ]]; then
+      version="$arg"
     fi
   done
 
@@ -128,10 +130,16 @@ function pyinit() {
     pyclean
   fi
 
-  pyvenv "$1"
+  if [[ -z "$version" ]]; then
+    if [[ -f "Dockerfile" ]]; then
+      version=$(grep -Eo 'FROM.*python:[0-9]+\.[0-9]+' Dockerfile | grep -Eo '[0-9]+\.[0-9]+')
+    fi
+  fi
+
+  pyvenv "$version"
   activate
   pydeps
-  pyreqs "$1"
+  pyreqs "$version"
   pyinfo
 }
 
