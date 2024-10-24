@@ -1,7 +1,5 @@
 #! /bin/zsh
 
-DEPS=$(pwd)/deps
-
 create_symlink() {
     local source_file=$1
     local target_file=$2
@@ -11,7 +9,7 @@ create_symlink() {
 
 # ALACRITTY
 mkdir -p ~/.config/alacritty
-create_symlink $DEPS/alacritty/config.toml ~/.config/alacritty/alacritty.toml
+create_symlink $(pwd)/alacritty/config.toml ~/.config/alacritty/alacritty.toml
 mkdir -p ~/.config/alacritty/themes
 if [ -z "$(ls -A ~/.config/alacritty/themes)" ]; then
     git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
@@ -21,25 +19,25 @@ else
 fi
 
 # GIT
-for file in $DEPS/git/.*; do
+for file in $(pwd)/git/.*; do
     create_symlink $file ~/$(basename $file)
 done
 
 # HELIX
-create_symlink $DEPS/helix ~/.config/helix
+create_symlink $(pwd)/helix ~/.config/helix
 
 # NIX
 mkdir -p ~/.config/nix
-create_symlink $DEPS/nix/flake.nix ~/.config/nix/flake.nix
+create_symlink $(pwd)/nix/flake.nix ~/.config/nix/flake.nix
 
 # SQLFLUFF
-create_symlink $DEPS/sqlfluff/config ~/.sqlfluff
+create_symlink $(pwd)/sqlfluff/config ~/.sqlfluff
 
 # SSH
-create_symlink $DEPS/ssh/config ~/.ssh/config
+create_symlink $(pwd)/ssh/config ~/.ssh/config
 
 # STARSHIP
-create_symlink $DEPS/starship/config.toml ~/.config/starship.toml
+create_symlink $(pwd)/starship/config.toml ~/.config/starship.toml
 
 # ZSH
-create_symlink $DEPS/zsh/.zshrc ~/.zshrc
+create_symlink $(pwd)/zsh/.zshrc ~/.zshrc

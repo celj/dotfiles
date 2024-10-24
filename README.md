@@ -2,29 +2,21 @@
 
 > OS: macOS Ventura
 
-First, install `brew` and `git`.
+First, install `nix`.
 
 ```shell
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install git gh
+sh <(curl -L https://nixos.org/nix/install)
 ```
 
-Then, clone this repo into home directory (`~` or `$HOME`) to `.dotfiles`.
+Then, symlink files.
 
 ```shell
-cd ~
-gh repo clone celj/dotfiles ~/.dotfiles
+chmod +x symlink.sh
+./symlink.sh
 ```
 
-## Packages needed
+Finally, install all packages with.
 
 ```shell
-brew bundle install --all --file=~/.dotfiles/brew/pkgs
-brew bundle cleanup --force --file=~/.dotfiles/brew/pkgs
-```
-
-## Symlink files
-
-```shell
-stow -d $HOME/.dotfiles -t $HOME
+darwin-rebuild switch --flake ~/.config/nix --impure
 ```
