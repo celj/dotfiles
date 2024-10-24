@@ -17,12 +17,10 @@ lineLength = 120
 
 [[language]]
 name = "sql"
-auto-format = false
+auto-format = true
 formatter = { command = "sqlfluff", args = [
   "fix",
-  "--exclude-rules",
-  "ST06",
-  "--dialect",
-  "postgres",
+  "--config",
+  "/Users/carlos/.sqlfluff",
   "-",
 ] }

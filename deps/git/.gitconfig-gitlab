@@ -3,4 +3,4 @@ name = Carlos Lezama
 email = carlos@dd3tech.mx
 
 [core]
-sshCommand = ssh -i ~/.ssh/work
+sshCommand = ssh -i ~/.ssh/gitlab

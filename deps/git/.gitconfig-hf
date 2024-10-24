@@ -1,0 +1,6 @@
+[user]
+name = Carlos Lezama
+email = carloselezamaj@gmail.com
+
+[core]
+sshCommand = ssh -i ~/.ssh/hf

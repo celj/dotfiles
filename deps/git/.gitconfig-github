@@ -3,4 +3,4 @@ name = Carlos Lezama
 email = carloselezamaj@gmail.com
 
 [core]
-sshCommand = ssh -i ~/.ssh/personal
+sshCommand = ssh -i ~/.ssh/github

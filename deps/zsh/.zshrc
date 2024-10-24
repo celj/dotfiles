@@ -2,15 +2,11 @@ export MACHINE=mac-n-cheese
 
 zstyle ':omz:update' mode auto
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(starship init zsh)"
 
-export BREW_FILE=~/.dotfiles/brew/pkgs
-export CPPFLAGS=-I/opt/homebrew/opt/openssl/include
 export EDITOR=hx
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export LDFLAGS=-L/opt/homebrew/opt/openssl/lib
 export MYPYDEPS=('notebook' 'poetry' 'pre-commit' 'pyright' 'python-dotenv' 'ruff' 'ruff-lsp')
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export PATH=$(brew --prefix)/opt/llvm/bin:$PATH
@@ -18,13 +14,8 @@ export PATH=/opt/homebrew/opt/postgresql@15/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=~/.cargo/bin:$PATH
 export PATH=~/.local/bin:$PATH
-export PKG_CONFIG_PATH=/opt/homebrew/opt/openssl/lib/pkgconfig
 export VISUAL=$EDITOR
 export ZSH=~/.oh-my-zsh
-
-export NVM_DIR='$HOME/.nvm'
-[ -s '/opt/homebrew/opt/nvm/nvm.sh' ] && \. '/opt/homebrew/opt/nvm/nvm.sh'
-[ -s '/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm' ] && \. '/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm'
 
 plugins=(
   aliases
@@ -36,8 +27,6 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source <(fzf --zsh)
 
 function set_environment() {
@@ -59,7 +48,7 @@ alias prod='set_environment production dd3tech.org.github'
 
 alias activate='source .venv/bin/activate && which python'
 alias btm='btm --process_memory_as_value'
-alias c='code'
+alias c='cursor'
 alias cat='bat --theme=ansi'
 alias dotfiles='vi ~/.dotfiles'
 alias gchanges='git ls-files --modified --exclude-standard'
@@ -67,13 +56,13 @@ alias gignored='git ls-files --cached --ignored --exclude-standard -z | xargs -0
 alias guntracked='git ls-files . --exclude-standard --others'
 alias ls='eza'
 alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killall Dock'
-alias personal='cd ~/Documents && l'
+alias personal='cd ~/Documents/personal && ls -a'
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias repo-info='onefetch --no-art --no-color-palette || true && tokei || true && scc || true'
 alias size='du -shc *'
 alias tree='eza --tree --all --git --ignore-glob ".DS_Store|.git|.next|.ruff_cache|.venv|__pycache__|node_modules|target|venv"'
 alias vi='hx'
-alias work='cd ~/Desktop && l'
+alias work='cd ~/Documents/work && ls -a'
 alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zshrc'
 
 function pyactivate() {
@@ -130,10 +119,16 @@ function pyinit() {
     pyclean
   fi
 
-  if [[ -z "$version" ]]; then
-    if [[ -f "Dockerfile" ]]; then
-      version=$(grep -Eo 'FROM.*python:[0-9]+\.[0-9]+' Dockerfile | grep -Eo '[0-9]+\.[0-9]+')
-    fi
+  if [[ -z "$version" && -f "Dockerfile" ]]; then
+    version=$(grep -Eo 'FROM.*python:[0-9]+\.[0-9]+' Dockerfile | grep -Eo '[0-9]+\.[0-9]+')
+  fi
+
+  if [[ -z "$version" && -f ".python-version" ]]; then
+    version=$(cat .python-version)
+  fi
+
+  if [[ -z "$version" && -f "pyproject.toml" ]]; then
+    version=$(grep -E '^(requires-python|python)' pyproject.toml | grep -Eo '[0-9]+(\.[0-9]+)+(<[0-9\.]+)?' | awk -F '[<>]' '{print $NF}' | sort -V | tail -n 1)
   fi
 
   pyvenv "$version"
@@ -155,14 +150,8 @@ function nd() {
 
 function sysupdate() {
   if [[ $(scutil --get LocalHostName) == $MACHINE ]]; then
-    echo "Updating brew packages..."
-    brew update
-    echo "Upgrading brew packages..."
-    brew upgrade
-    echo "Updating brew dump file..."
-    brew bundle dump --force --file=$BREW_FILE
-    echo "Cleaning up brew packages..."
-    brew bundle cleanup --force --file=$BREW_FILE
+    echo "Updating all packages..."
+    darwin-rebuild switch --flake ~/.config/nix --impure
     echo "Removing previous aliases..."
     unalias -m "*"
     echo "Reloading zsh..."
@@ -171,12 +160,8 @@ function sysupdate() {
     new-app
     echo "System updated!"
   else
-    echo "Updating brew packages..."
-    brew update
-    echo "Upgrading brew packages..."
-    brew upgrade
-    echo "Cleaning up brew packages..."
-    brew bundle cleanup --force --file=$BREW_FILE
+    echo "Updating all packages..."
+    darwin-rebuild switch --flake ~/.config/nix --impure
     echo "Removing previous aliases..."
     unalias -m "*"
     echo "Reloading zsh..."

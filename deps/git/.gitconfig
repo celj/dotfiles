@@ -1,0 +1,29 @@
+[alias]
+undo = reset --soft HEAD^
+
+[core]
+excludesfile = ~/.gitignore
+
+[includeIf "gitdir:~/Documents"]
+path = ~/.gitconfig-github
+
+[includeIf "gitdir:~/Documents"]
+path = ~/.gitconfig-gitlab
+
+[includeIf "gitdir:~/Documents"]
+path = ~/.gitconfig-hf
+
+[includeIf "gitdir:~/.dotfiles/"]
+path = ~/.gitconfig-github
+
+[init]
+defaultBranch = main
+
+[user]
+name = Carlos Lezama
+email = carloselezamaj@gmail.com
+[filter "lfs"]
+clean = git-lfs clean -- %f
+smudge = git-lfs smudge -- %f
+process = git-lfs filter-process
+required = true
