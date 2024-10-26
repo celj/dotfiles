@@ -47,6 +47,7 @@ function set_environment() {
 alias dev='set_environment development dd3tech-sandbox.org.github'
 alias prod='set_environment production dd3tech.org.github'
 
+alias -g speedtest='speedtest-go'
 alias activate='source .venv/bin/activate && which python'
 alias btm='btm --process_memory_as_value'
 alias c='cursor'
@@ -57,15 +58,19 @@ alias gignored='git ls-files --cached --ignored --exclude-standard -z | xargs -0
 alias guntracked='git ls-files . --exclude-standard --others'
 alias ls='eza'
 alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killall Dock'
-alias personal='cd ~/Documents/personal && ls -a'
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias repo-info='onefetch --no-art --no-color-palette || true && tokei || true && scc || true'
 alias size='du -shc *'
-alias -g speedtest='speedtest-go'
 alias tree='eza --tree --all --git --ignore-glob ".DS_Store|.git|.next|.ruff_cache|.venv|__pycache__|node_modules|target|venv"'
 alias vi='hx'
-alias work='cd ~/Documents/work && ls -a'
 alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zshrc'
+
+function workspace() {
+  cd ~/Documents/$1 && ls -a
+}
+
+alias personal='workspace personal'
+alias dd3='workspace dd3'
 
 function pyactivate() {
   activate
@@ -153,6 +158,7 @@ function nd() {
 function sysupdate() {
   if [[ $(scutil --get LocalHostName) == $MACHINE ]]; then
     echo "Updating all packages..."
+    nix flake update --flake $NIX_FILE --impure
     darwin-rebuild switch --flake $NIX_FILE --impure
     echo "Removing previous aliases..."
     unalias -m "*"
@@ -163,6 +169,7 @@ function sysupdate() {
     echo "System updated!"
   else
     echo "Updating all packages..."
+    nix flake update --flake $NIX_FILE --impure
     darwin-rebuild switch --flake $NIX_FILE --impure
     echo "Removing previous aliases..."
     unalias -m "*"

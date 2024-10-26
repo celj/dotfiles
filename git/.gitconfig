@@ -4,17 +4,14 @@ undo = reset --soft HEAD^
 [core]
 excludesfile = ~/.gitignore
 
-[includeIf "gitdir:~/Documents"]
+[includeIf "gitdir:~"]
 path = ~/.gitconfig-github
 
-[includeIf "gitdir:~/Documents"]
+[includeIf "gitdir:~"]
 path = ~/.gitconfig-gitlab
 
-[includeIf "gitdir:~/Documents"]
+[includeIf "gitdir:~"]
 path = ~/.gitconfig-hf
-
-[includeIf "gitdir:~/.dotfiles/"]
-path = ~/.gitconfig-github
 
 [init]
 defaultBranch = main
