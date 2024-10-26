@@ -8,6 +8,7 @@ export EDITOR=hx
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export MYPYDEPS=('notebook' 'poetry' 'pre-commit' 'pyright' 'python-dotenv' 'ruff' 'ruff-lsp')
+export NIX_FILE=~/.config/nix
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export PATH=$(brew --prefix)/opt/llvm/bin:$PATH
 export PATH=/opt/homebrew/opt/postgresql@15/bin:$PATH
@@ -60,6 +61,7 @@ alias personal='cd ~/Documents/personal && ls -a'
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias repo-info='onefetch --no-art --no-color-palette || true && tokei || true && scc || true'
 alias size='du -shc *'
+alias -g speedtest='speedtest-go'
 alias tree='eza --tree --all --git --ignore-glob ".DS_Store|.git|.next|.ruff_cache|.venv|__pycache__|node_modules|target|venv"'
 alias vi='hx'
 alias work='cd ~/Documents/work && ls -a'
@@ -151,7 +153,7 @@ function nd() {
 function sysupdate() {
   if [[ $(scutil --get LocalHostName) == $MACHINE ]]; then
     echo "Updating all packages..."
-    darwin-rebuild switch --flake ~/.config/nix --impure
+    darwin-rebuild switch --flake $NIX_FILE --impure
     echo "Removing previous aliases..."
     unalias -m "*"
     echo "Reloading zsh..."
@@ -161,7 +163,7 @@ function sysupdate() {
     echo "System updated!"
   else
     echo "Updating all packages..."
-    darwin-rebuild switch --flake ~/.config/nix --impure
+    darwin-rebuild switch --flake $NIX_FILE --impure
     echo "Removing previous aliases..."
     unalias -m "*"
     echo "Reloading zsh..."
@@ -195,6 +197,42 @@ function syncsys() {
     echo "Updating system..."
     sysupdate
   fi
+}
+
+function notify() {
+  local start_time=$(date +%s)
+
+  "$@"
+
+  local cmd_status=$?
+
+  local end_time=$(date +%s)
+  local duration=$((end_time - start_time))
+
+  local formatted_time
+  local hours=$((duration / 3600))
+  local minutes=$(((duration % 3600) / 60))
+  local seconds=$((duration % 60))
+
+  if [ $hours -gt 0 ]; then
+    formatted_time="${hours}h ${minutes}m"
+  elif [ $minutes -gt 0 ]; then
+    formatted_time="${minutes}m ${seconds}s"
+  else
+    formatted_time="${seconds}s"
+  fi
+
+  local status_message
+  if [ $cmd_status -eq 0 ]; then
+    status_message="✅"
+  else
+    status_message="❌"
+  fi
+
+  terminal-notifier \
+    -title "Task: $*" \
+    -message "Elapsed Time: ${formatted_time} ${status_message}" \
+    -sound Crystal
 }
 
 export PNPM_HOME="$HOME/Library/pnpm"

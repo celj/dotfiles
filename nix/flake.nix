@@ -56,7 +56,9 @@
             pkgs.starship
             pkgs.tailscale
             pkgs.taplo
+            pkgs.terminal-notifier
             pkgs.terraform
+            pkgs.timer
             pkgs.tmux
             pkgs.tokei
             pkgs.typst
@@ -98,8 +100,7 @@
 
         system.defaults = {
           dock.autohide = false;
-          dock.persistent-apps = [
-          ];
+          dock.persistent-apps = [];
           finder.FXPreferredViewStyle = "clmv";
           loginwindow.GuestEnabled = false;
           NSGlobalDomain.AppleICUForce24HourTime = true;

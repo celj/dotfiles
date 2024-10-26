@@ -18,5 +18,5 @@ chmod +x symlink.sh
 Finally, install all packages with.
 
 ```shell
-darwin-rebuild switch --flake ~/.config/nix --impure
+nix run nix-darwin -- switch --flake ~/.config/nix --impure
 ```

@@ -1,6 +1,6 @@
 [user]
 name = Carlos Lezama
-email = carlos@dd3tech.mx
+email = carloselezamaj@gmail.com
 
 [core]
 sshCommand = ssh -i ~/.ssh/gitlab
