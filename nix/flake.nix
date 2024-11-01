@@ -30,14 +30,18 @@
             pkgs.helix
             pkgs.awscli
             pkgs.bat
+            pkgs.bottom
             pkgs.bun
+            pkgs.colima
             pkgs.deno
+            pkgs.docker
             pkgs.fzf
             pkgs.gh
             pkgs.go
             pkgs.gopls
             pkgs.httpie
             pkgs.hyperfine
+            pkgs.kubectl
             pkgs.mkalias
             pkgs.neofetch
             pkgs.nil
@@ -77,7 +81,7 @@
           casks = [
             "alacritty"
             "cursor"
-            "docker"
+            "microsoft-excel"
             "slack"
             "spotify"
             "tableplus"
