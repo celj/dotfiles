@@ -23,19 +23,21 @@ function set_environment() {
   tailscale switch $2
 }
 
-alias dev='set_environment development dd3tech-sandbox.org.github'
-alias prod='set_environment production dd3tech.org.github'
-
 alias activate='source .venv/bin/activate && which python'
 alias btm='btm --process_memory_as_value'
 alias c='cursor'
 alias cat='bat --theme=ansi'
+alias dd3='workspace dd3'
+alias dev='set_environment development dd3tech-sandbox.org.github'
 alias dotfiles='vi ~/dotfiles'
+alias down='unset AWS_PROFILE && unset EXECUTION_ENVIRONMENT && unset AWS_ACCESS_KEY_ID && unset AWS_SECRET_ACCESS_KEY && tailscale down'
 alias gchanges='git ls-files --modified --exclude-standard'
 alias gignored='git ls-files --cached --ignored --exclude-standard -z | xargs -0 git rm --cached'
 alias guntracked='git ls-files . --exclude-standard --others'
 alias ls='eza'
 alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killall Dock'
+alias personal='workspace personal'
+alias prod='set_environment production dd3tech.org.github'
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias repo-info='onefetch --no-art --no-color-palette || true && tokei || true && scc || true'
 alias size='du -shc *'
@@ -46,9 +48,6 @@ alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zprofile && source 
 function workspace() {
   cd ~/Documents/$1 && ls -a
 }
-
-alias personal='workspace personal'
-alias dd3='workspace dd3'
 
 function pyactivate() {
   activate
