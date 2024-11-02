@@ -26,7 +26,6 @@ function set_environment() {
 alias dev='set_environment development dd3tech-sandbox.org.github'
 alias prod='set_environment production dd3tech.org.github'
 
-alias -g speedtest='speedtest-go'
 alias activate='source .venv/bin/activate && which python'
 alias btm='btm --process_memory_as_value'
 alias c='cursor'
