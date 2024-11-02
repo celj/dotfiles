@@ -1,11 +1,12 @@
 # My dotfiles
 
-> OS: macOS Ventura
+> OS: macOS Sequoia
 
-First, install `nix`.
+First, install `brew` and `omz`.
 
 ```shell
-sh <(curl -L https://nixos.org/nix/install)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
 Then, symlink files.
@@ -15,8 +16,8 @@ chmod +x symlink.sh
 ./symlink.sh
 ```
 
-Finally, install all packages with.
+Finally, install all packages with
 
 ```shell
-nix run nix-darwin -- switch --flake ~/.config/nix --impure
+brew bundle --file=$HOME/dotfiles/Brewfile
 ```

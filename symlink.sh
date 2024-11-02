@@ -3,7 +3,13 @@
 create_symlink() {
     local source_file=$1
     local target_file=$2
-    ln -sf $source_file $target_file
+    local is_directory=${3:-false}
+
+    if [ "$is_directory" = true ]; then
+        rm -rf "$target_file"
+    fi
+
+    ln -sf "$source_file" "$target_file"
     echo "$source_file -> $target_file"
 }
 
@@ -24,11 +30,7 @@ for file in $(pwd)/git/.*; do
 done
 
 # HELIX
-create_symlink $(pwd)/helix ~/.config/helix
-
-# NIX
-mkdir -p ~/.config/nix
-create_symlink $(pwd)/nix/flake.nix ~/.config/nix/flake.nix
+create_symlink $(pwd)/helix ~/.config/helix true
 
 # SQLFLUFF
 create_symlink $(pwd)/sqlfluff/config ~/.sqlfluff
@@ -40,4 +42,5 @@ create_symlink $(pwd)/ssh/config ~/.ssh/config
 create_symlink $(pwd)/starship/config.toml ~/.config/starship.toml
 
 # ZSH
+create_symlink $(pwd)/zsh/.zprofile ~/.zprofile
 create_symlink $(pwd)/zsh/.zshrc ~/.zshrc

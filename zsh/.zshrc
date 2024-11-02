@@ -1,22 +1,4 @@
-export MACHINE=mac-n-cheese
-
-zstyle ':omz:update' mode auto
-
 eval "$(starship init zsh)"
-
-export EDITOR=hx
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export MYPYDEPS=('notebook' 'poetry' 'pre-commit' 'pyright' 'python-dotenv' 'ruff' 'ruff-lsp')
-export NIX_FILE=~/.config/nix
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-export PATH=$(brew --prefix)/opt/llvm/bin:$PATH
-export PATH=/opt/homebrew/opt/postgresql@15/bin:$PATH
-export PATH=/usr/local/bin:$PATH
-export PATH=~/.cargo/bin:$PATH
-export PATH=~/.local/bin:$PATH
-export VISUAL=$EDITOR
-export ZSH=~/.oh-my-zsh
 
 plugins=(
   aliases
@@ -26,9 +8,6 @@ plugins=(
   qrcode
   terraform
 )
-
-source $ZSH/oh-my-zsh.sh
-source <(fzf --zsh)
 
 function set_environment() {
   export AWS_PROFILE=$1
@@ -52,7 +31,7 @@ alias activate='source .venv/bin/activate && which python'
 alias btm='btm --process_memory_as_value'
 alias c='cursor'
 alias cat='bat --theme=ansi'
-alias dotfiles='vi ~/.dotfiles'
+alias dotfiles='vi ~/dotfiles'
 alias gchanges='git ls-files --modified --exclude-standard'
 alias gignored='git ls-files --cached --ignored --exclude-standard -z | xargs -0 git rm --cached'
 alias guntracked='git ls-files . --exclude-standard --others'
@@ -63,7 +42,7 @@ alias repo-info='onefetch --no-art --no-color-palette || true && tokei || true &
 alias size='du -shc *'
 alias tree='eza --tree --all --git --ignore-glob ".DS_Store|.git|.next|.ruff_cache|.venv|__pycache__|node_modules|target|venv"'
 alias vi='hx'
-alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zshrc'
+alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zprofile && source ~/.zshrc'
 
 function workspace() {
   cd ~/Documents/$1 && ls -a
@@ -157,9 +136,14 @@ function nd() {
 
 function sysupdate() {
   if [[ $(scutil --get LocalHostName) == $MACHINE ]]; then
-    echo "Updating all packages..."
-    nix flake update --flake $NIX_FILE --impure
-    darwin-rebuild switch --flake $NIX_FILE --impure
+    echo "Updating brew packages..."
+    brew update
+    echo "Upgrading brew packages..."
+    brew upgrade
+    echo "Updating brew dump file..."
+    brew bundle dump --force --file=$BREW_FILE
+    echo "Cleaning up brew packages..."
+    brew bundle cleanup --force --file=$BREW_FILE --zap
     echo "Removing previous aliases..."
     unalias -m "*"
     echo "Reloading zsh..."
@@ -168,9 +152,12 @@ function sysupdate() {
     new-app
     echo "System updated!"
   else
-    echo "Updating all packages..."
-    nix flake update --flake $NIX_FILE --impure
-    darwin-rebuild switch --flake $NIX_FILE --impure
+    echo "Updating brew packages..."
+    brew update
+    echo "Upgrading brew packages..."
+    brew upgrade
+    echo "Cleaning up brew packages..."
+    brew bundle cleanup --force --file=$BREW_FILE --zap
     echo "Removing previous aliases..."
     unalias -m "*"
     echo "Reloading zsh..."
@@ -186,7 +173,7 @@ function syncsys() {
     echo "Updating system..."
     sysupdate
     echo "Pushing changes to github..."
-    cd ~/.dotfiles
+    cd ~/dotfiles
     git add .
     if [ "$1" != "" ]; then
       git commit -m "$1"
@@ -199,7 +186,7 @@ function syncsys() {
       echo "You are not on the main machine."
     fi
     echo "Pulling changes from github..."
-    cd ~/.dotfiles
+    cd ~/dotfiles
     git pull --rebase
     echo "Updating system..."
     sysupdate
@@ -241,9 +228,3 @@ function notify() {
     -message "Elapsed Time: ${formatted_time} ${status_message}" \
     -sound Crystal
 }
-
-export PNPM_HOME="$HOME/Library/pnpm"
-case ":$PATH:" in
-*":$PNPM_HOME:"*) ;;
-*) export PATH="$PNPM_HOME:$PATH" ;;
-esac
