@@ -1,28 +1,5 @@
 eval "$(starship init zsh)"
 
-plugins=(
-  aliases
-  git
-  macos
-  python
-  qrcode
-  terraform
-)
-
-function set_environment() {
-  export AWS_PROFILE=$1
-  export EXECUTION_ENVIRONMENT=$1
-
-  export AWS_ACCESS_KEY_ID=$(aws configure get $1.aws_access_key_id)
-  export AWS_SECRET_ACCESS_KEY=$(aws configure get $1.aws_secret_access_key)
-
-  echo "AWS_PROFILE: $AWS_PROFILE"
-  echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT"
-
-  tailscale up
-  tailscale switch $2
-}
-
 alias activate='source .venv/bin/activate && which python'
 alias btm='btm --process_memory_as_value'
 alias c='cursor'
@@ -47,6 +24,20 @@ alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zprofile && source 
 
 function workspace() {
   cd ~/Documents/$1 && ls -a
+}
+
+function set_environment() {
+  export AWS_PROFILE=$1
+  export EXECUTION_ENVIRONMENT=$1
+
+  export AWS_ACCESS_KEY_ID=$(aws configure get $1.aws_access_key_id)
+  export AWS_SECRET_ACCESS_KEY=$(aws configure get $1.aws_secret_access_key)
+
+  echo "AWS_PROFILE: $AWS_PROFILE"
+  echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT"
+
+  tailscale up
+  tailscale switch $2
 }
 
 function pyactivate() {
@@ -133,62 +124,45 @@ function nd() {
 }
 
 function sysupdate() {
+  echo "Updating brew packages..."
+  brew update
+  echo "Upgrading brew packages..."
+  brew upgrade
   if [[ $(scutil --get LocalHostName) == $MACHINE ]]; then
-    echo "Updating brew packages..."
-    brew update
-    echo "Upgrading brew packages..."
-    brew upgrade
     echo "Updating brew dump file..."
     brew bundle dump --force --file=$BREW_FILE
-    echo "Cleaning up brew packages..."
-    brew bundle cleanup --force --file=$BREW_FILE --zap
-    echo "Removing previous aliases..."
-    unalias -m "*"
-    echo "Reloading zsh..."
-    source ~/.zshrc
-    echo "Reloading launchpad ..."
-    new-app
-    echo "System updated!"
-  else
-    echo "Updating brew packages..."
-    brew update
-    echo "Upgrading brew packages..."
-    brew upgrade
-    echo "Cleaning up brew packages..."
-    brew bundle cleanup --force --file=$BREW_FILE --zap
-    echo "Removing previous aliases..."
-    unalias -m "*"
-    echo "Reloading zsh..."
-    source ~/.zshrc
-    echo "Reloading launchpad ..."
-    new-app
-    echo "System updated!"
   fi
+  echo "Cleaning up brew packages..."
+  brew bundle cleanup --force --file=$BREW_FILE --zap
+  echo "Unaliasing all commands..."
+  unalias -m "*"
+  echo "Reloading zsh..."
+  source ~/.zshrc
+  echo "Reloading launchpad ..."
+  new-app
+  echo "System updated!"
 }
 
 function syncsys() {
+  local current_dir=$(pwd)
+  cd ~/dotfiles
+  echo "Syncing system..."
   if [[ $(scutil --get LocalHostName) == $MACHINE ]]; then
     echo "Updating system..."
     sysupdate
     echo "Pushing changes to github..."
-    cd ~/dotfiles
     git add .
-    if [ "$1" != "" ]; then
-      git commit -m "$1"
-    else
-      git commit -m "sync update 🚀"
-    fi
+    git commit -m "${1:-sync update 🚀}"
     git push
   else
-    if [ "$1" != "" ]; then
-      echo "You are not on the main machine."
-    fi
+    [[ -n "$1" ]] && echo "You are not on the main machine."
     echo "Pulling changes from github..."
-    cd ~/dotfiles
     git pull --rebase
     echo "Updating system..."
     sysupdate
   fi
+  echo "System synced!"
+  cd "$current_dir"
 }
 
 function notify() {
