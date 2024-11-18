@@ -21,19 +21,3 @@ case ":$PATH:" in
 *":$PNPM_HOME:"*) ;;
 *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-
-zstyle ':omz:update' mode auto
-
-plugins=(
-    aliases
-    git
-    macos
-    python
-    qrcode
-    terraform
-)
-
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source <(fzf --zsh)
-source $ZSH/oh-my-zsh.sh

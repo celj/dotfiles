@@ -1,4 +1,20 @@
+zstyle ':omz:update' mode auto
+
+plugins=(
+  aliases
+  git
+  macos
+  python
+  qrcode
+  terraform
+)
+
 eval "$(starship init zsh)"
+
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source <(fzf --zsh)
+source $ZSH/oh-my-zsh.sh
 
 alias activate='source .venv/bin/activate && which python'
 alias btm='btm --process_memory_as_value'
@@ -6,7 +22,7 @@ alias c='cursor'
 alias cat='bat --theme=ansi'
 alias dd3='workspace dd3'
 alias dev='set_environment development dd3tech-sandbox.org.github'
-alias dotfiles='vi ~/dotfiles'
+alias dotfiles='cursor ~/dotfiles --wait'
 alias down='unset AWS_PROFILE && unset EXECUTION_ENVIRONMENT && unset AWS_ACCESS_KEY_ID && unset AWS_SECRET_ACCESS_KEY && tailscale down'
 alias gchanges='git ls-files --modified --exclude-standard'
 alias gignored='git ls-files --cached --ignored --exclude-standard -z | xargs -0 git rm --cached'
@@ -38,6 +54,7 @@ function set_environment() {
 
   tailscale up
   tailscale switch $2
+  tailscale switch --list
 }
 
 function pyactivate() {
