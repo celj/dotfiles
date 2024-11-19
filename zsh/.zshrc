@@ -217,3 +217,8 @@ function notify() {
     -message "Elapsed Time: ${formatted_time} ${status_message}" \
     -sound Crystal
 }
+
+function www() {
+  url=$(git remote -v | grep '(fetch)' | awk '{print $2}' | sed -E 's|^git@([^:]+):(.*)\.git$|https://\1/\2|')
+  open $url
+}
