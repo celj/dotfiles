@@ -16,30 +16,38 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source <(fzf --zsh)
 source $ZSH/oh-my-zsh.sh
 
-alias activate='source .venv/bin/activate && which python'
-alias btm='btm --process_memory_as_value'
-alias c='cursor'
-alias cat='bat --theme=ansi'
-alias dd3='workspace dd3'
+alias dd3='workspace ~/Developer/dd3'
+alias desk='workspace ~/Desktop'
+alias lemonade='workspace ~/Developer/lemonade'
+alias personal='workspace ~/Developer/personal'
+alias sand='workspace ~/Developer/sandbox'
+
 alias dev='set_environment development dd3tech-sandbox.org.github'
-alias dotfiles='cursor ~/dotfiles --wait'
+alias prod='set_environment production dd3tech.org.github'
 alias down='unset AWS_PROFILE && unset EXECUTION_ENVIRONMENT && unset AWS_ACCESS_KEY_ID && unset AWS_SECRET_ACCESS_KEY && tailscale down'
+
 alias gchanges='git ls-files --modified --exclude-standard'
 alias gignored='git ls-files --cached --ignored --exclude-standard -z | xargs -0 git rm --cached'
 alias guntracked='git ls-files . --exclude-standard --others'
-alias ls='eza'
-alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killall Dock'
-alias personal='workspace personal'
-alias prod='set_environment production dd3tech.org.github'
-alias randpw='openssl rand -base64 12 | pbcopy'
 alias repo-info='onefetch --no-art --no-color-palette || true && tokei || true && scc || true'
-alias size='du -shc *'
+
+alias btm='btm --process_memory_as_value'
+alias c='cursor'
+alias cat='bat --theme=ansi'
+alias ls='eza'
 alias tree='eza --tree --all --git --ignore-glob ".DS_Store|.git|.next|.ruff_cache|.venv|__pycache__|node_modules|target|venv"'
 alias vi='hx'
+
+alias activate='source .venv/bin/activate && which python'
+alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killall Dock'
+alias randpw='openssl rand -base64 12 | pbcopy'
+alias size='du -shc *'
+
+alias dotfiles='cursor ~/dotfiles --wait && unalias -m "*" && source ~/.zprofile && source ~/.zshrc'
 alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zprofile && source ~/.zshrc'
 
 function workspace() {
-  cd ~/Documents/$1 && ls -a
+  cd $1 && l
 }
 
 function set_environment() {
