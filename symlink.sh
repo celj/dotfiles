@@ -13,21 +13,13 @@ create_symlink() {
     echo "$source_file -> $target_file"
 }
 
-# ALACRITTY
-mkdir -p ~/.config/alacritty
-create_symlink $(pwd)/alacritty/config.toml ~/.config/alacritty/alacritty.toml
-mkdir -p ~/.config/alacritty/themes
-if [ -z "$(ls -A ~/.config/alacritty/themes)" ]; then
-    git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
-    echo "https://github.com/alacritty/alacritty-theme -> ~/.config/alacritty/themes"
-else
-    echo "https://github.com/alacritty/alacritty-theme -> ~/.config/alacritty/themes"
-fi
-
 # GIT
 for file in $(pwd)/git/.*; do
     create_symlink $file ~/$(basename $file)
 done
+
+# GHOSTTY
+create_symlink $(pwd)/ghostty ~/.config/ghostty true
 
 # HELIX
 create_symlink $(pwd)/helix ~/.config/helix true
