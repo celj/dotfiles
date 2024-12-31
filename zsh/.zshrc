@@ -43,7 +43,7 @@ alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killal
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias size='du -shc *'
 
-alias dotfiles='cursor ~/dotfiles --wait && unalias -m "*" && source ~/.zprofile && source ~/.zshrc'
+alias dotfiles='vi ~/dotfiles && unalias -m "*" && source ~/.zprofile && source ~/.zshrc'
 alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zprofile && source ~/.zshrc'
 
 function workspace() {

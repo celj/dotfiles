@@ -1,6 +1,6 @@
 bold-is-bright = true
 cursor-style = block
-custom-shader = /Users/carlos/.config/ghostty/shader.glsl
+custom-shader = ../../dotfiles/glsl/glow-rgbsplit-twitchy.glsl
 font-family = ComicShannsMono Nerd Font
 font-size = 14
 macos-option-as-alt = right
