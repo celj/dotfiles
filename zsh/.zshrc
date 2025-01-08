@@ -18,6 +18,7 @@ source $ZSH/oh-my-zsh.sh
 
 alias dd3='workspace ~/Developer/dd3'
 alias desk='workspace ~/Desktop'
+alias dot='workspace ~/dotfiles'
 alias lemon='workspace ~/Developer/lemonade'
 alias personal='workspace ~/Developer/personal'
 alias sand='workspace ~/Developer/sandbox'
