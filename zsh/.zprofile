@@ -13,6 +13,7 @@ export PATH=/opt/homebrew/opt/postgresql@16/bin:$PATH
 export PATH=/opt/homebrew/opt/rustup/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=~/.cargo/bin:$PATH
+export PATH=~/.config/composer/vendor/bin:$PATH
 export PATH=~/.local/bin:$PATH
 export VISUAL=$EDITOR
 export ZSH=~/.oh-my-zsh
