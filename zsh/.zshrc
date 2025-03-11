@@ -19,13 +19,14 @@ source $ZSH/oh-my-zsh.sh
 alias dd3='workspace ~/Developer/dd3'
 alias desk='workspace ~/Desktop'
 alias dot='workspace ~/dotfiles'
+alias down='workspace ~/Downloads'
 alias lemon='workspace ~/Developer/lemonade'
 alias personal='workspace ~/Developer/personal'
 alias sand='workspace ~/Developer/sandbox'
 
 alias dev='set_environment development dd3tech-sandbox.org.github'
 alias prod='set_environment production dd3tech.org.github'
-alias down='unset AWS_PROFILE && unset EXECUTION_ENVIRONMENT && unset AWS_ACCESS_KEY_ID && unset AWS_SECRET_ACCESS_KEY && tailscale down'
+alias off='unset AWS_PROFILE && unset EXECUTION_ENVIRONMENT && unset AWS_ACCESS_KEY_ID && unset AWS_SECRET_ACCESS_KEY && tailscale down'
 
 alias gchanges='git ls-files --modified --exclude-standard'
 alias gignored='git ls-files --cached --ignored --exclude-standard -z | xargs -0 git rm --cached'
@@ -48,7 +49,10 @@ alias dotfiles='vi ~/dotfiles && unalias -m "*" && source ~/.zprofile && source 
 alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zprofile && source ~/.zshrc'
 
 function workspace() {
-  cd $1 && l
+  if [ ! -d "$1" ]; then
+    mkdir -p "$1"
+  fi
+  cd "$1" && l
 }
 
 function set_environment() {
