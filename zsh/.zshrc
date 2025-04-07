@@ -147,4 +147,14 @@ function www() {
   open $url
 }
 
+function pgurl() {
+  local secret_id="$1"
+  local profile="$2"
+  
+  local url=$(aws secretsmanager get-secret-value --secret-id "$secret_id" --profile "$profile" --query 'SecretString' --output text | 
+  jq -r '"postgresql://\(.username):\(.password)@\(.host):\(.port // "5432")/\(.dbname // "<unknown>")"')
+  
+  echo "$url" | tee >(pbcopy)
+}
+
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
