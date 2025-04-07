@@ -1,3 +1,7 @@
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 zstyle ':omz:update' mode auto
 
 plugins=(
@@ -9,7 +13,7 @@ plugins=(
   terraform
 )
 
-eval "$(starship init zsh)"
+source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
 
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -41,12 +45,15 @@ alias tree='eza --tree --all --git --ignore-glob ".DS_Store|.git|.next|.ruff_cac
 alias vi='hx'
 
 alias activate='source .venv/bin/activate && which python'
-alias new-app='defaults write com.apple.dock ResetLaunchPad -bool true && killall Dock'
+alias new-app='find 2>/dev/null /private/var/folders/ -type d -name com.apple.dock.launchpad -exec rm -rf {} +; killall Dock'
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias size='du -shc *'
 
 alias dotfiles='vi ~/dotfiles && unalias -m "*" && source ~/.zprofile && source ~/.zshrc'
 alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zprofile && source ~/.zshrc'
+
+alias speedtest='notify speedtest'
+alias sysupdate='notify sysupdate'
 
 function workspace() {
   if [ ! -d "$1" ]; then
@@ -68,79 +75,6 @@ function set_environment() {
   tailscale up
   tailscale switch $2
   tailscale switch --list
-}
-
-function pyactivate() {
-  activate
-}
-
-function pyclean() {
-  rm -f poetry.lock
-  rm -rf .ruff_cache
-  rm -rf .venv
-}
-
-function pydeps() {
-  uv pip install --upgrade pip
-  uv pip install $MYPYDEPS
-}
-
-function pyinfo() {
-  echo "Virtual environment set to $(python --version)"
-  which python
-}
-
-function pyreqs() {
-  if [ -f "pyproject.toml" ]; then
-    if grep -q "poetry" pyproject.toml; then
-      poetry install --no-root
-    fi
-    if grep -q "uv" pyproject.toml; then
-      uv lock --python "$1"
-      uv sync --frozen --python "$1"
-    fi
-  elif [ -f "requirements.txt" ]; then
-    uv pip install -r requirements.txt
-  fi
-}
-
-function pyvenv() {
-  uv venv --python="$1" .venv
-}
-
-function pyinit() {
-  force=0
-  version=""
-
-  for arg in "$@"; do
-    if [[ "$arg" == "--force" || "$arg" == "-f" ]]; then
-      force=1
-    elif [[ -z "$version" ]]; then
-      version="$arg"
-    fi
-  done
-
-  if [[ $force -eq 1 ]]; then
-    pyclean
-  fi
-
-  if [[ -z "$version" && -f "Dockerfile" ]]; then
-    version=$(grep -Eo 'FROM.*python:[0-9]+\.[0-9]+' Dockerfile | grep -Eo '[0-9]+\.[0-9]+')
-  fi
-
-  if [[ -z "$version" && -f ".python-version" ]]; then
-    version=$(cat .python-version)
-  fi
-
-  if [[ -z "$version" && -f "pyproject.toml" ]]; then
-    version=$(grep -E '^(requires-python|python)' pyproject.toml | grep -Eo '[0-9]+(\.[0-9]+)+(<[0-9\.]+)?' | awk -F '[<>]' '{print $NF}' | sort -V | tail -n 1)
-  fi
-
-  pyvenv "$version"
-  activate
-  pydeps
-  pyreqs "$version"
-  pyinfo
 }
 
 function fcd() {
@@ -173,28 +107,6 @@ function sysupdate() {
   echo "System updated!"
 }
 
-function syncsys() {
-  local current_dir=$(pwd)
-  cd ~/dotfiles
-  echo "Syncing system..."
-  if [[ $(scutil --get LocalHostName) == $MACHINE ]]; then
-    echo "Updating system..."
-    sysupdate
-    echo "Pushing changes to github..."
-    git add .
-    git commit -m "${1:-sync update 🚀}"
-    git push
-  else
-    [[ -n "$1" ]] && echo "You are not on the main machine."
-    echo "Pulling changes from github..."
-    git pull --rebase
-    echo "Updating system..."
-    sysupdate
-  fi
-  echo "System synced!"
-  cd "$current_dir"
-}
-
 function notify() {
   local start_time=$(date +%s)
 
@@ -218,20 +130,21 @@ function notify() {
     formatted_time="${seconds}s"
   fi
 
-  local status_message
+  local message
   if [ $cmd_status -eq 0 ]; then
-    status_message="✅"
+    message="✅ Succeeded after ${formatted_time}"
   else
-    status_message="❌"
+    message="❌ Failed after ${formatted_time}"
   fi
 
-  terminal-notifier \
-    -title "Task: $*" \
-    -message "Elapsed Time: ${formatted_time} ${status_message}" \
-    -sound Crystal
+  echo -e '\033]777;notify;;'"$message"''
 }
 
 function www() {
   url=$(git remote -v | grep '(fetch)' | awk '{print $2}' | sed -E 's|^git@([^:]+):(.*)\.git$|https://\1/\2|')
+  branch=$(git branch --show-current)
+  [[ -n "$branch" ]] && url="${url}/tree/${branch}"
   open $url
 }
+
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

@@ -5,7 +5,6 @@ export EDITOR=hx
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export MACHINE=mac-n-cheese
-export MYPYDEPS=('notebook' 'poetry' 'pre-commit' 'pyright' 'python-dotenv' 'ruff' 'ruff-lsp')
 export NODE_NO_WARNINGS=1
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export PATH=/opt/homebrew/opt/llvm/bin:$PATH
