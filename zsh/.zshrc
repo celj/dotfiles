@@ -1,7 +1,3 @@
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 zstyle ':omz:update' mode auto
 
 plugins=(
@@ -13,7 +9,7 @@ plugins=(
   terraform
 )
 
-source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
+eval "$(starship init zsh)"
 
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -27,6 +23,7 @@ alias down='workspace ~/Downloads'
 alias lemon='workspace ~/Developer/lemonade'
 alias personal='workspace ~/Developer/personal'
 alias sand='workspace ~/Developer/sandbox'
+alias sec='workspace ~/Developer/security'
 
 alias dev='set_environment development dd3tech-sandbox.org.github'
 alias prod='set_environment production dd3tech.org.github'
@@ -66,8 +63,8 @@ function set_environment() {
   export AWS_PROFILE=$1
   export EXECUTION_ENVIRONMENT=$1
 
-  export AWS_ACCESS_KEY_ID=$(aws configure get $1.aws_access_key_id)
-  export AWS_SECRET_ACCESS_KEY=$(aws configure get $1.aws_secret_access_key)
+  # export AWS_ACCESS_KEY_ID=$(aws configure get $1.aws_access_key_id)
+  # export AWS_SECRET_ACCESS_KEY=$(aws configure get $1.aws_secret_access_key)
 
   echo "AWS_PROFILE: $AWS_PROFILE"
   echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT"
@@ -150,11 +147,9 @@ function www() {
 function pgurl() {
   local secret_id="$1"
   local profile="$2"
-  
-  local url=$(aws secretsmanager get-secret-value --secret-id "$secret_id" --profile "$profile" --query 'SecretString' --output text | 
-  jq -r '"postgresql://\(.username):\(.password)@\(.host):\(.port // "5432")/\(.dbname // "<unknown>")"')
-  
+
+  local url=$(aws secretsmanager get-secret-value --secret-id "$secret_id" --profile "$profile" --query 'SecretString' --output text |
+    jq -r '"postgresql://\(.username):\(.password)@\(.host):\(.port // "5432")/\(.dbname // "<unknown>")"')
+
   echo "$url" | tee >(pbcopy)
 }
-
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
