@@ -46,8 +46,8 @@ alias new-app='find 2>/dev/null /private/var/folders/ -type d -name com.apple.do
 alias randpw='openssl rand -base64 12 | pbcopy'
 alias size='du -shc *'
 
-alias dotfiles='vi ~/dotfiles && unalias -m "*" && source ~/.zprofile && source ~/.zshrc'
-alias zsh-config='vi ~/.zshrc && unalias -m "*" && source ~/.zprofile && source ~/.zshrc'
+alias dotfiles='cursor -w ~/dotfiles && unalias -m "*" && source ~/.zprofile && source ~/.zshrc'
+alias zsh-config='cursor -w ~/.zshrc && unalias -m "*" && source ~/.zprofile && source ~/.zshrc'
 
 alias speedtest='notify speedtest'
 alias sysupdate='notify sysupdate'
