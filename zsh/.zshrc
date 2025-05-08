@@ -1,3 +1,5 @@
+eval "$(starship init zsh)"
+
 zstyle ':omz:update' mode auto
 
 plugins=(
@@ -8,8 +10,6 @@ plugins=(
   qrcode
   terraform
 )
-
-eval "$(starship init zsh)"
 
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -148,8 +148,10 @@ function pgurl() {
   local secret_id="$1"
   local profile="$2"
 
-  local url=$(aws secretsmanager get-secret-value --secret-id "$secret_id" --profile "$profile" --query 'SecretString' --output text |
-    jq -r '"postgresql://\(.username):\(.password)@\(.host):\(.port // "5432")/\(.dbname // "<unknown>")"')
+  local secret=$(aws secretsmanager get-secret-value --secret-id "$secret_id" --profile "$profile" --query 'SecretString' --output text)
+  local url=$(echo "$secret" | jq -r '"postgresql://\(.username):\(.password)@\(.host):\(.port // "5432")/\(.dbname // "<unknown>")"')
 
-  echo "$url" | tee >(pbcopy)
+  echo -n "$url" | tee >(pbcopy)
+  echo
+  echo "$secret" | jq
 }
