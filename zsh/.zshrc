@@ -1,5 +1,3 @@
-eval "$(starship init zsh)"
-
 zstyle ':omz:update' mode auto
 
 plugins=(
@@ -11,10 +9,13 @@ plugins=(
   terraform
 )
 
+source $ZSH/oh-my-zsh.sh
+
+eval "$(starship init zsh)"
+
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source <(fzf --zsh)
-source $ZSH/oh-my-zsh.sh
 
 alias dd3='workspace ~/Developer/dd3'
 alias desk='workspace ~/Desktop'
@@ -27,7 +28,13 @@ alias sec='workspace ~/Developer/security'
 
 alias dev='set_environment development dd3tech-sandbox.org.github'
 alias prod='set_environment production dd3tech.org.github'
-alias off='unset AWS_PROFILE && unset EXECUTION_ENVIRONMENT && unset AWS_ACCESS_KEY_ID && unset AWS_SECRET_ACCESS_KEY && tailscale down'
+alias off='
+unset AWS_PROFILE &&
+unset EXECUTION_ENVIRONMENT &&
+unset AWS_ACCESS_KEY_ID &&
+unset AWS_SECRET_ACCESS_KEY &&
+tailscale down
+'
 
 alias gchanges='git ls-files --modified --exclude-standard'
 alias gignored='git ls-files --cached --ignored --exclude-standard -z | xargs -0 git rm --cached'
@@ -69,8 +76,9 @@ function set_environment() {
   echo "AWS_PROFILE: $AWS_PROFILE"
   echo "EXECUTION_ENVIRONMENT: $EXECUTION_ENVIRONMENT"
 
-  tailscale up
+  tailscale down
   tailscale switch $2
+  tailscale up
   tailscale switch --list
 }
 
