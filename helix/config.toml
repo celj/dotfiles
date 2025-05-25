@@ -13,7 +13,7 @@ cursor-line = "hint"
 other-lines = "hint"
 
 [editor.lsp]
-display-inlay-hints = true
+display-inlay-hints = false
 
 [editor.soft-wrap]
 enable = true
