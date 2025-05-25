@@ -4,8 +4,13 @@ theme = "carlos"
 auto-save = true
 bufferline = "multiple"
 color-modes = true
+end-of-line-diagnostics = "hint"
 line-number = "relative"
 true-color = true
+
+[editor.inline-diagnostics]
+cursor-line = "hint"
+other-lines = "hint"
 
 [editor.lsp]
 display-inlay-hints = true

@@ -1,16 +1,7 @@
 [[language]]
 name = "python"
-auto-format = false
-language-servers = [
-  { name = "pyright", except-features = [
-    "format",
-    "diagnostics",
-  ] },
-  { name = "ruff" },
-]
-
-[language-server.ruff]
-command = "ruff-lsp"
+language-servers = ["ruff", "pyright"]
+auto-format = true
 
 [language-server.ruff.config.settings]
 lineLength = 120
@@ -19,7 +10,8 @@ lineLength = 120
 name = "sql"
 auto-format = true
 formatter = { command = "sqlfluff", args = [
-  "fix",
+  "format",
+  "--nocolor",
   "--config",
   "/Users/carlos/.sqlfluff",
   "-",
