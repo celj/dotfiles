@@ -1,5 +1,9 @@
 add_newline = false
-format = '▲ ($username@$hostname) $directory($git_branch@$git_commit$git_status )'
+format = '''
+
+$time $username@$hostname
+$directory($git_branch@$git_commit $git_status)
+\$ '''
 
 [username]
 format = '[$user]($style)'
@@ -28,14 +32,12 @@ disabled = false
 only_detached = false
 
 [git_status]
-format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted$stashed)]($style)($ahead_behind)]($style)"
+format = '([\[$all_status$ahead_behind\]]($style))'
 style = 'red'
 ahead = "↑"
 behind = "↓"
-conflicted = "​"
-deleted = "​"
-modified = "​"
-renamed = "​"
-staged = "​"
-stashed = ""
-untracked = "​"
+
+[time]
+disabled = false
+style = 'bold gray'
+format = '$time($style)'
