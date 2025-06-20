@@ -1,5 +1,7 @@
 zstyle ':omz:update' mode auto
 
+ZSH_THEME=""
+
 plugins=(
   aliases
   git
@@ -58,6 +60,8 @@ alias zsh-config='cursor -w ~/.zshrc && unalias -m "*" && source ~/.zprofile && 
 
 alias speedtest='notify speedtest'
 alias sysupdate='notify sysupdate'
+
+alias hfc='history -n 1 | fzf | tr -d "\n" | pbcopy'
 
 function workspace() {
   if [ ! -d "$1" ]; then
